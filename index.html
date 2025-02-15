@@ -24,15 +24,15 @@
         <div id="div-right">
             <div id="rotorboard">
                 <div id="rotor-box-left">
-                    <div class="rotor-label">
-                        <div>I</div>
-                        <div>II</div>
-                        <div>III</div>
-                        <div>IV</div>
-                        <div>V</div>
+                    <div id="rotor-label-left" class="rotor-label">
+                        <div id="label-1">I</div>
+                        <div id="label-2">II</div>
+                        <div id="label-3">III</div>
+                        <div id="label-4">IV</div>
+                        <div id="label-5">V</div>
                     </div>
                     <div id="rotor-tray">
-                        <div id="rotor-placeholder-1" class="rotor-placeholder">
+                        <div id="rotor-holder-1" class="rotor-holder">
                             <div id="rotor-1" class="rotor">
                                 <div class="axis">
                                     <div class="plate" style="transform: rotateX(0deg) translateZ(10.83vh);">01</div>
@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="rotor-placeholder-2" class="rotor-placeholder">
+                        <div id="rotor-holder-2" class="rotor-holder">
                             <div id="rotor-2" class="rotor">
                                 <div class="axis">
                                     <div class="plate" style="transform: rotateX(0deg) translateZ(10.83vh);">01</div>
@@ -96,7 +96,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="rotor-placeholder-3" class="rotor-placeholder">
+                        <div id="rotor-holder-3" class="rotor-holder">
                             <div id="rotor-3" class="rotor">
                                 <div class="axis">
                                     <div class="plate" style="transform: rotateX(0deg) translateZ(10.83vh);">01</div>
@@ -128,7 +128,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="rotor-placeholder-4" class="rotor-placeholder">
+                        <div id="rotor-holder-4" class="rotor-holder">
                             <div id="rotor-4" class="rotor">
                                 <div class="axis">
                                     <div class="plate" style="transform: rotateX(0deg) translateZ(10.83vh);">01</div>
@@ -160,7 +160,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="rotor-placeholder-5" class="rotor-placeholder">
+                        <div id="rotor-holder-5" class="rotor-holder">
                             <div id="rotor-5" class="rotor">
                                 <div class="axis">
                                     <div class="plate" style="transform: rotateX(0deg) translateZ(10.83vh);">01</div>
@@ -195,15 +195,15 @@
                     </div>
                 </div>
                 <div id="rotor-box-right">
-                    <div class="rotor-label">
-                        <div>-</div>
-                        <div>-</div>
-                        <div>-</div>
+                    <div id="rotor-label-right" class="rotor-label">
+                        <div id="label-6">-</div>
+                        <div id="label-7">-</div>
+                        <div id="label-8">-</div>
                     </div>
                     <div id="rotor-in-use">
-                        <div id="rotor-placeholder-6" class="rotor-placeholder"></div>
-                        <div id="rotor-placeholder-7" class="rotor-placeholder"></div>
-                        <div id="rotor-placeholder-8" class="rotor-placeholder"></div>
+                        <div id="rotor-holder-6" class="rotor-holder"></div>
+                        <div id="rotor-holder-7" class="rotor-holder"></div>
+                        <div id="rotor-holder-8" class="rotor-holder"></div>
                     </div>
                 </div>
             </div>
@@ -349,15 +349,8 @@
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
-    <script>
-    $( function() {
-        $( ".rotor" ).draggable({
-            zIndex: 100
-        });
-    } );
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

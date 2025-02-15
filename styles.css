@@ -117,7 +117,7 @@ button {
     margin-left: 0vh;
 }
 
-.rotor-placeholder {
+.rotor-holder {
     width: 7vh;
     height: 21.8vh;
     display: flex;
@@ -372,3 +372,8 @@ button {
 #plugkey-P, #plughole-P {
     margin-left: 1vh;
 } */
+
+#rotor-in-use .ui-droppable-active {
+    background-color: #b4b4b4;
+    box-shadow: 0px 0px 50px #fffc51 inset;
+}
