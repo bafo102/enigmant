@@ -1,18 +1,24 @@
 @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css);
 
-/*color
-#000000
-#2E2E2E
-#4B4B4B
-#7D7D7D
-#BFBFBF
-*/
+
+:root {
+    --black: #000000;
+    --dark-gray: #2E2E2E;
+    --gray: #4B4B4B;
+    --light-gray: #7D7D7D;
+    --lighter-gray: #BFBFBF;
+    --angle: 13.846;
+}
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
+    
+}
+
+body {
     overflow: hidden;
 }
 
@@ -30,6 +36,20 @@
     background-color: rgb(253, 218, 223);
     width: 50vw;
     height: 4vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+a {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+button {
+    height: 3vh;
+    width: 3vh;
+    border-radius: 50%;
+    border: none;
 }
 
 #setting-div {
@@ -51,50 +71,98 @@
 }
 
 #div-right {
-    background-color: lightgray;
+    background-color: #4f4b4b;
     width: 50vw;
     height: 100vh;
 }
 
-#rotor-tray {
-    background-color: aliceblue;
-    height: 25vh;
+#rotorboard {
+    background-color: #4B4B4B;
+    border-bottom: 1px solid rgb(116, 107, 107);
     display: flex;
     justify-content: center;
-    /* align-items: center; */
+    align-items: center;
 }
-
-#unused-tray {
-    border: 2px black solid;
-    margin: 2vh 1vh;
-    width: 56%;
+.rotor-label {
     display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 2vh 2.5vh 0.5vh 2.5vh;
 }
 
-#unused-tray > * {
-    border: 2px black solid;
-    margin: 2vh 1vh;
-    width: 56%;
+.rotor-label > * {
+    width: 25%;
+    /* border: 1px solid blue; */
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2.5vh;
+    font-weight: bold;
+    color: rgb(236, 236, 236);
+    user-select: none;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+    text-align: center;
 }
 
-#used-tray {
-    border: 2px black solid;
-    margin: 2vh 1vh;
-    width: 34%;
+#rotor-tray, #rotor-in-use {
+    background-color: var(--lighter-gray);
     display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2vh;
+    margin-top: 0vh;
+    background: linear-gradient(to bottom, #808080, #afafaf 10%, #999999 30%, #b2b2b2 50%, #d7d7d7 66% 75%, #8c8c8c 90% 95%);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2),
 }
 
-#used-tray > * {
-    border: 2px black solid;
-    margin: 2vh 1vh;
-    width: 56%;
-
+#rotor-tray > * + *, #rotor-in-use > * + * {
+    margin-left: 0vh;
 }
 
-/* KEYBOARD */
+.rotor-placeholder {
+    width: 7vh;
+    height: 21.8vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1vh;
+    background-color: #2E2E2E;
+}
+
+.rotor {
+    width: 7vh;
+    height: 21.8vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #777, #4e4e4e 10%, #747373 30%, #666 50%, #888888 66% 75%, #555 90% 95%);
+    overflow: hidden;
+    box-shadow: 2px 7px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.axis {
+    width: 5.5vh;
+    transform: translateY(-1.33333vh);
+    transform-style: preserve-3d;
+}
+
+.plate {
+    background-color: rgb(233, 233, 233);
+    position: absolute;
+    height: 2.6vh;
+    width: 5.5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.8vh;
+    font-weight: bold;
+    box-shadow: 0px 7px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* LAMPBOARD */
 
 #lampboard {
-    background-color: #4b4b4b;
+    background-color: #4B4B4B;
     border-bottom: 1px solid rgb(116, 107, 107);
     /* height: 25vh; */
 }
@@ -137,11 +205,15 @@
 }
 
 #lamp-Q {
-    margin-left: 5vh;
+    margin-left: 2vh;
+}
+
+#lamp-A {
+    margin-left: 0vh;
 }
 
 #lamp-P {
-    margin-left: 1vh;
+    margin-left: -2vh;
 }
 
 /* .lamp {
@@ -160,7 +232,8 @@
 /* KEYBOARD */
 
 #keyboard {
-    /* background-color: #4f4b4b; */
+    background-color: #4f4b4b;
+    border-bottom: 1px solid rgb(116, 107, 107);
     /* height: 25vh; */
 }
 
@@ -200,16 +273,20 @@
     border: solid 2px white;
     /* border-bottom: solid 3px white; */
     user-select: none;
-    box-shadow: 0px 7px 6px rgba(0, 0, 0, 0.2),
-                1px 2px 4px rgba(0, 0, 0, 0.5) inset;
+    box-shadow: 0px 7px 6px rgba(0, 0, 0, 0.2), /*outer shadow, bot-right*/
+                1px 2px 4px rgba(0, 0, 0, 0.5) inset; /*inner shadow, top-left*/
 }
 
 #key-Q {
-    margin-left: 5vh;
+    margin-left: 2vh;
+}
+
+#key-A {
+    margin-left: 0vh;
 }
 
 #key-P {
-    margin-left: 1vh;
+    margin-left: -2vh;
 }
 
 .key:hover {
@@ -224,7 +301,74 @@
     transform: scale(0.9);
 }
 
+
+/* PLUGBOARD */
+
 #plugboard {
-    background-color: rgb(127, 161, 194);
-    height: 25vh;
+    background-color: #4f4b4b;
+    border-bottom: 1px solid rgb(116, 107, 107);
 }
+
+#plugboard > div > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid red; */
+}
+
+#plugrow-1 {
+    margin-top: 2vh;
+}
+
+#plugrow-3 {
+    margin-bottom: 2vh;
+}
+
+.plugkey {
+    margin-left: 3vh;
+    background-color: none;
+    height: 3.5vh;
+    width: 4vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5vh;
+    font-weight: bold;
+    color: rgb(232, 233, 198);
+    user-select: none;
+    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2);
+}
+
+#plugkey-Q, #plughole-Q, #plugkey-A, #plughole-A, #plugkey-P, #plughole-P {
+    margin-left: 0vh;
+}
+
+#plughole-row-1, #plughole-row-2, #plughole-row-3 {
+    padding-bottom: 1vh;
+}
+
+.plughole {
+    margin-left: 4vh;
+    background-color: #000000;
+    height: 3vh;
+    width: 3vh;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5vh;
+    font-weight: bold;
+    color: rgb(238, 237, 237);
+    border: solid 6px rgb(250, 255, 206);
+    user-select: none;
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+/* #plugkey-Q, #plughole-Q {
+    margin-left: 5vh;
+}
+
+#plugkey-P, #plughole-P {
+    margin-left: 1vh;
+} */

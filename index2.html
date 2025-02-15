@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertical Alphabet Cylinder</title>
+    <style>
+        :root {
+            --a: a; /* Length of the equal sides */
+            --alpha: α; /* Angle between the equal sides */
+            --b: b; /* Length of the base */
+        }
+
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            overflow: hidden; /* Prevent scrolling the body */
+            /* perspective: 1000px; */
+        }
+        .carousel {
+            /* width: 100px; */
+            /* height: 248.8px; */
+            /* height: 124.4px; */
+            /* position: relative; */
+            transform-style: preserve-3d;
+            /* border: 1px red solid; */
+            /* background-color: blue; */
+        }
+        .box {
+            width: 100px;
+            height: 30px;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: white;
+            border-radius: 10px; /* Rounded corners */
+        }
+        /* Generate boxes with different colors and letters A-Z */   
+        .box1 { background-color: #e74c3c; transform: rotateX(0deg) translateZ(124.4px); }
+        .box2 { background-color: #3498db; transform: rotateX(13.846deg) translateZ(124.4px); }
+        .box3 { background-color: #2ecc71; transform: rotateX(27.692deg) translateZ(124.4px); }
+        .box4 { background-color: #f1c40f; transform: rotateX(41.538deg) translateZ(124.4px); }
+        .box5 { background-color: #9b59b6; transform: rotateX(55.384deg) translateZ(124.4px); }
+        .box6 { background-color: #1abc9c; transform: rotateX(69.230deg) translateZ(124.4px); }
+        .box7 { background-color: #e67e22; transform: rotateX(83.077deg) translateZ(124.4px); }
+        .box8 { background-color: #34495e; transform: rotateX(96.923deg) translateZ(124.4px); }
+        .box9 { background-color: #16a085; transform: rotateX(110.769deg) translateZ(124.4px); }
+        .box10 { background-color: #2980b9; transform: rotateX(124.615deg) translateZ(124.4px); }
+        .box11 { background-color: #8e44ad; transform: rotateX(138.462deg) translateZ(124.4px); }
+        .box12 { background-color: #d35400; transform: rotateX(152.308deg) translateZ(124.4px); }
+        .box13 { background-color: #c0392b; transform: rotateX(166.154deg) translateZ(124.4px); }
+        .box14 { background-color: #2c3e50; transform: rotateX(180.000deg) translateZ(124.4px); }
+        .box15 { background-color: #f39c12; transform: rotateX(193.846deg) translateZ(124.4px); }
+        .box16 { background-color: #d35400; transform: rotateX(207.692deg) translateZ(124.4px); }
+        .box17 { background-color: #e67e22; transform: rotateX(221.538deg) translateZ(124.4px); }
+        .box18 { background-color: #f1c40f; transform: rotateX(235.385deg) translateZ(124.4px); }
+        .box19 { background-color: #2ecc71; transform: rotateX(249.231deg) translateZ(124.4px); }
+        .box20 { background-color: #3498db; transform: rotateX(263.077deg) translateZ(124.4px); }
+        .box21 { background-color: #9b59b6; transform: rotateX(276.923deg) translateZ(124.4px); }
+        .box22 { background-color: #e74c3c; transform: rotateX(290.769deg) translateZ(124.4px); }
+        .box23 { background-color: #34495e; transform: rotateX(304.615deg) translateZ(124.4px); }
+        .box24 { background-color: #16a085; transform: rotateX(318.462deg) translateZ(124.4px); }
+        .box25 { background-color: #2980b9; transform: rotateX(332.308deg) translateZ(124.4px); }
+        .box26 { background-color: #8e44ad; transform: rotateX(346.154deg) translateZ(124.4px); }
+    </style>
+</head>
+<body>
+    <div class="carousel">
+        <div class="box box1">A</div>
+        <div class="box box2">B</div>
+        <div class="box box3">C</div>
+        <div class="box box4">D</div>
+        <div class="box box5">E</div>
+        <div class="box box6">F</div>
+        <div class="box box7">G</div>
+        <div class="box box8">H</div>
+        <div class="box box9">I</div>
+        <div class="box box10">J</div>
+        <div class="box box11">K</div>
+        <div class="box box12">L</div>
+        <div class="box box13">M</div>
+        <div class="box box14">N</div>
+        <div class="box box15">O</div>
+        <div class="box box16">P</div>
+        <div class="box box17">Q</div>
+        <div class="box box18">R</div>
+        <div class="box box19">S</div>
+        <div class="box box20">T</div>
+        <div class="box box21">U</div>
+        <div class="box box22">V</div>
+        <div class="box box23">W</div>
+        <div class="box box24">X</div>
+        <div class="box box25">Y</div>
+        <div class="box box26">Z</div>
+    </div>
+
+    <script>
+        let currentRotation = 0;
+        let targetRotation = 0; // Target rotation for smoother animation
+        let animationFrameId;
+
+        window.addEventListener('wheel', (event) => {
+            event.preventDefault(); // Prevent default scrolling
+            const rotationAmount = 10; // Degrees to rotate for each scroll
+            targetRotation += event.deltaY > 0 ? rotationAmount : -rotationAmount;
+
+            // Cancel any ongoing animation frame
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            animate();
+        });
+
+
+        function nearestDivisor(value, divisor) {
+           return Math.round(value / divisor) * divisor;
+        }
+
+        function animate() {
+            currentRotation += (targetRotation - currentRotation) * 0.1; // Smooth transition
+            // document.querySelector('.carousel').style.transform = `rotateX(${currentRotation}deg)`;
+            // Select all box elements
+            const boxes = document.querySelectorAll('.box');
+
+            // Update the rotation for each box
+            boxes.forEach((box, index) => {
+                const degreeOffset = index * (360 / boxes.length); // Calculate a unique rotation for each box
+                box.style.transform = `rotateX(${currentRotation + degreeOffset}deg) translateZ(124.4px)` ;
+            });
+
+            if (Math.abs(targetRotation - currentRotation) > 0.1) {
+                animationFrameId = requestAnimationFrame(animate);
+            } else {
+                // Reset to nearest divisor of 13.846 when stopping
+                const resetRotation = nearestDivisor(currentRotation, 13.846);
+                boxes.forEach((box, index) => {
+                const degreeOffset = index * (360 / boxes.length);
+                box.style.transform = `rotateX(${resetRotation + degreeOffset}deg) translateZ(124.4px)`;
+                });
+            }
+        }
+        let totalNotches = 0;
+
+        window.addEventListener('wheel', (event) => {
+            // Normalize the scroll amount
+            const notches = Math.sign(event.deltaY); // 1 for down, -1 for up
+            totalNotches += notches;
+
+            console.log(`Total notches: ${totalNotches}`);
+
+            // Optionally, prevent the default scroll behavior
+            event.preventDefault();
+        });
+
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script>
+    $( function() {
+        $( ".carousel" ).draggable();
+    } );
+    </script>
+</body>
+</html>
