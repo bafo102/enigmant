@@ -31,29 +31,10 @@ function playSound() {
 
 keys.forEach(key => {key.addEventListener("mousedown", playSound)});
 
-// function spin() {
-//     alldivs = document.querySelector("#rotor-x").children;
-//     for (i = 0; i < alldivs.length; ++i) {
-//         div = alldivs[i];
-//         coefficient = alldivs[i].getAttribute('style').slice(4);
-//         // console.log(coefficient);
-//         if (coefficient == 0) {
-//             div.setAttribute('style', "--i:25");
-//         } else {
-//             div.setAttribute('style', `--i:${Number(coefficient) - 1}`);
-//         }
-//     }
-// }
+// initialize and disable left tray
+$( "#rotor-tray .rotor-holder" ).droppable();
+$( "#rotor-tray .rotor-holder" ).droppable("disable");
 
-// window.addEventListener('scroll', () => {
-//     const scrollAmount = window.scrollY; // Get the current vertical scroll position
-//     console.log(scrollAmount); // Output the amount of scroll in pixels
-// });
-
-window.addEventListener('wheel', (event) => {
-    event.preventDefault(); // Prevent default scrolling
-    console.log(event.deltaY);
-});
 
 $( function() {
     $( ".rotor" ).draggable({
@@ -70,12 +51,30 @@ $( function() {
 
     $( ".rotor-holder" ).droppable({
         drop: function( event, ui ) {
+            // actually move the rotor inside the rotor-holder
+            $( this ).append(ui.draggable);
+
+            // make only in-use rotor to be spinnable
+            document.querySelectorAll('#rotor-in-use .rotor-holder .rotor').forEach(rotor => {
+                rotor.addEventListener('wheel', spinRotor);
+            });
+            document.querySelectorAll('#rotor-tray .rotor-holder .rotor').forEach(rotor => {
+                rotor.removeEventListener('wheel', spinRotor);
+            });
+
+            // play sound
+            if ($(this).parent().attr('id') == "rotor-in-use") {
+                dropInUseSound = new Audio(`sound/drop-in-use.mp3`);
+                dropInUseSound.play();
+            } else {
+                dropInTraySound = new Audio(`sound/drop-in-tray.mp3`);
+                dropInTraySound.play();
+            }
             // disable busy holder
             if ($(this).children.length > 0) {
                 $(this).droppable("disable");
             }
-            // actually move the rotor inside the rotor-holder
-            $( this ).append(ui.draggable);
+            
             // position the rotor to fit the rotor-holder
             ui.draggable.position({
                 my: "left top",
@@ -83,6 +82,13 @@ $( function() {
                 of: $(this)
             }),
             updateRotorLabel();
+
+            // show readiness of rotors in use
+            if (rotorInUse[1] != "-" && rotorInUse[2] != "-" && rotorInUse[3] != "-") {
+                document.querySelector("#rotor-label-right").classList.add("ready");
+            } else {
+                document.querySelector("#rotor-label-right").classList.remove("ready");
+            }
         }
     });
 } );
@@ -130,3 +136,38 @@ function updateRotorLabel() {
     label_7.textContent = rotorInUse[2] == '-' ? '-' : rotorLabels[Number(rotorInUse[2])];
     label_8.textContent = rotorInUse[3] == '-' ? '-' : rotorLabels[Number(rotorInUse[3])];
 }
+    
+function spinRotor(event) {
+    // rotor
+    rotorTarget = event.target.id;
+    if (event.target.className.includes('plate')) {
+        rotorTarget = event.target.parentNode.parentNode.id;
+    }
+
+    // Prevent default scrolling
+    event.preventDefault(); 
+    
+    // Each notch can be considered as an event
+    mouseNotchCount = 0;
+    degreeToRotate = 0;
+
+    mouseNotchCount += Math.sign(event.deltaY);
+    degreeToRotate = mouseNotchCount * 13.846;
+
+    // play sound
+    ringClickSound = new Audio(`sound/click.mp3`);
+    ringClickSound.play();
+
+    // Update the rotation for each box
+    plates = document.querySelectorAll(`#${rotorTarget} .axis .plate`);
+    plates.forEach(plate => {
+        plateCurrentDeg = plate.getAttribute('style').match(/rotateX\(([-+]?\d*\.?\d+)deg\)/)[1];
+        plate.style.transform = `rotateX(${degreeToRotate + Number(plateCurrentDeg)}deg) translateZ(10.83vh)` ;
+    });
+
+    degreeToRotate = 0;
+    mouseNotchCount = 0;
+};
+
+
+

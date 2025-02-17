@@ -119,9 +119,9 @@
         });
 
 
-        function nearestDivisor(value, divisor) {
-           return Math.round(value / divisor) * divisor;
-        }
+        // function nearestDivisor(value, divisor) {
+        //    return Math.round(value / divisor) * divisor;
+        // }
 
         function animate() {
             currentRotation += (targetRotation - currentRotation) * 0.1; // Smooth transition
@@ -137,27 +137,33 @@
 
             if (Math.abs(targetRotation - currentRotation) > 0.1) {
                 animationFrameId = requestAnimationFrame(animate);
-            } else {
-                // Reset to nearest divisor of 13.846 when stopping
-                const resetRotation = nearestDivisor(currentRotation, 13.846);
-                boxes.forEach((box, index) => {
-                const degreeOffset = index * (360 / boxes.length);
-                box.style.transform = `rotateX(${resetRotation + degreeOffset}deg) translateZ(124.4px)`;
-                });
             }
+            console.log("currentRotation", currentRotation)
+            console.log("targetRotation", targetRotation)
+            console.log("animationFrameId", animationFrameId)
+            console.log(`targetRotation - currentRotation = ${targetRotation - currentRotation}`);
+
+            // } else {
+            //     // Reset to nearest divisor of 13.846 when stopping
+            //     const resetRotation = nearestDivisor(currentRotation, 13.846);
+            //     boxes.forEach((box, index) => {
+            //     const degreeOffset = index * (360 / boxes.length);
+            //     box.style.transform = `rotateX(${resetRotation + degreeOffset}deg) translateZ(124.4px)`;
+            //     });
+            // }
         }
-        let totalNotches = 0;
+        // let totalNotches = 0;
 
-        window.addEventListener('wheel', (event) => {
-            // Normalize the scroll amount
-            const notches = Math.sign(event.deltaY); // 1 for down, -1 for up
-            totalNotches += notches;
+        // window.addEventListener('wheel', (event) => {
+        //     // Normalize the scroll amount
+        //     const notches = Math.sign(event.deltaY); // 1 for down, -1 for up
+        //     totalNotches += notches;
 
-            console.log(`Total notches: ${totalNotches}`);
+        //     console.log(`Total notches: ${totalNotches}`);
 
-            // Optionally, prevent the default scroll behavior
-            event.preventDefault();
-        });
+        //     // Optionally, prevent the default scroll behavior
+        //     event.preventDefault();
+        // });
 
 
     </script>

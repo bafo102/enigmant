@@ -15,26 +15,16 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
-    
 }
 
 body {
     overflow: hidden;
 }
 
-#main {
-    display: flex;
-}
-
-#div-left {
-    background-color: #7D7D7D;
-    width: 50vw;
-    height: 100vh;
-}
-
 #header {
-    background-color: rgb(253, 218, 223);
-    width: 50vw;
+    background-color: #7D7D7D;
+    background-color: #BFBFBF;
+    border-bottom: 1px solid rgb(116, 107, 107);
     height: 4vh;
     display: flex;
     justify-content: center;
@@ -52,29 +42,41 @@ button {
     border: none;
 }
 
-#setting-div {
-    background-color: rgb(160, 150, 151);
-    width: 50vw;
-    height: 6vh;
+#main {
+    display: flex;
 }
 
-#input-div {
-    background-color: rgb(230, 170, 179);
-    width: 50vw;
-    height: 45vh;
-}
-
-#output-div {
-    background-color: rgb(206, 141, 151);
-    width: 50vw;
-    height: 45vh;
-}
-
-#div-right {
-    background-color: #4f4b4b;
+#div-left {
+    background-color: #4B4B4B;
     width: 50vw;
     height: 100vh;
+    border-right: 1px solid rgb(116, 107, 107);
 }
+
+#setting {
+    background-color: #4B4B4B;
+    border-bottom: 1px solid rgb(116, 107, 107);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 3vh;
+}
+
+#setting > * > * {
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#setting-label > * {
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* ROTORBOARD */
 
 #rotorboard {
     background-color: #4B4B4B;
@@ -83,11 +85,17 @@ button {
     justify-content: center;
     align-items: center;
 }
+
+#rotorboard > * {
+    margin: 4vh;
+    margin-top: 3vh;
+}
+
 .rotor-label {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    margin: 2vh 2.5vh 0.5vh 2.5vh;
+    margin: 0vh 0.5vh 0.5vh 0.5vh;
 }
 
 .rotor-label > * {
@@ -102,16 +110,35 @@ button {
     text-align: center;
 }
 
+.ready > * {
+    color: #fffb14;
+    text-shadow:
+      0 0 7px #fff,
+      0 0 10px #fff,
+      0 0 21px #fff,
+      0 0 42px #fffb14,
+      0 0 82px #fffb14,
+      0 0 92px #fffb14,
+      0 0 102px #fffb14,
+      0 0 151px #fffb14;
+}
+
 #rotor-tray, #rotor-in-use {
     background-color: var(--lighter-gray);
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 2vh;
     margin-top: 0vh;
     background: linear-gradient(to bottom, #808080, #afafaf 10%, #999999 30%, #b2b2b2 50%, #d7d7d7 66% 75%, #8c8c8c 90% 95%);
     box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2),
 }
+
+/* #rotor-in-use {
+    background: linear-gradient(to bottom, #d4af37, #c2a15e 10%, #b89b3b 30%, #f0d68a 50%, #e3b757 66% 75%, #a67c29 90% 95%);
+    background: linear-gradient(to bottom, #f7e7b4, #f0d68a 10%, #e8c76a 30%, #e9c54a 50%, #f1d39c 66% 75%, #d4af37 90% 95%);
+    background: linear-gradient(to bottom, #ffc15d, #fce8b2 10%, #f8dc8e 30%, #f9d36b 50%, #fbe8a5 66% 75%, #e4b645 90% 95%);
+    background: linear-gradient(to bottom, #b76e4f, #c68a6b 10%, #d19a7a 30%, #e0b79e 50%, #f0c1a5 66% 75%, #d76d5e 90% 95%);
+} */
 
 #rotor-tray > * + *, #rotor-in-use > * + * {
     margin-left: 0vh;
@@ -157,6 +184,94 @@ button {
     font-size: 1.8vh;
     font-weight: bold;
     box-shadow: 0px 7px 6px rgba(0, 0, 0, 0.2);
+    user-select: none;
+}
+
+/* PLUGBOARD */
+
+#plugboard {
+    background-color: #4B4B4B;
+    border-bottom: 1px solid rgb(116, 107, 107);
+}
+
+#plugboard > div > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid red; */
+}
+
+#plugrow-1 {
+    padding-top: 2vh;
+}
+
+#plugrow-3 {
+    margin-bottom: 2vh;
+}
+
+.plugkey {
+    margin-left: 3vh;
+    background-color: none;
+    height: 3.5vh;
+    width: 4vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5vh;
+    font-weight: bold;
+    color: rgb(232, 233, 198);
+    user-select: none;
+    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2);
+}
+
+#plugkey-Q, #plughole-Q, #plugkey-A, #plughole-A, #plugkey-P, #plughole-P {
+    margin-left: 0vh;
+}
+
+#plughole-row-1, #plughole-row-2, #plughole-row-3 {
+    padding-bottom: 1vh;
+}
+
+.plughole {
+    margin-left: 4vh;
+    background-color: #000000;
+    height: 3vh;
+    width: 3vh;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5vh;
+    font-weight: bold;
+    color: rgb(238, 237, 237);
+    border: solid 6px rgb(250, 255, 206);
+    user-select: none;
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+/* #plugkey-Q, #plughole-Q {
+    margin-left: 5vh;
+}
+
+#plugkey-P, #plughole-P {
+    margin-left: 1vh;
+} */
+
+
+
+
+#div-right {
+    background-color: #4B4B4B   ;
+    width: 50vw;
+    height: 100vh;
+}
+
+/* MESSAGE */
+#message {
+    background-color: #4B4B4B;
+    border-bottom: 1px solid rgb(116, 107, 107);
+    height: 29vh;
 }
 
 /* LAMPBOARD */
@@ -232,7 +347,7 @@ button {
 /* KEYBOARD */
 
 #keyboard {
-    background-color: #4f4b4b;
+    background-color: #4B4B4B;
     border-bottom: 1px solid rgb(116, 107, 107);
     /* height: 25vh; */
 }
@@ -300,78 +415,6 @@ button {
                 1px 2px 4px rgba(0, 0, 0, 0.5) inset;
     transform: scale(0.9);
 }
-
-
-/* PLUGBOARD */
-
-#plugboard {
-    background-color: #4f4b4b;
-    border-bottom: 1px solid rgb(116, 107, 107);
-}
-
-#plugboard > div > * {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* border: 1px solid red; */
-}
-
-#plugrow-1 {
-    margin-top: 2vh;
-}
-
-#plugrow-3 {
-    margin-bottom: 2vh;
-}
-
-.plugkey {
-    margin-left: 3vh;
-    background-color: none;
-    height: 3.5vh;
-    width: 4vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2.5vh;
-    font-weight: bold;
-    color: rgb(232, 233, 198);
-    user-select: none;
-    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2);
-}
-
-#plugkey-Q, #plughole-Q, #plugkey-A, #plughole-A, #plugkey-P, #plughole-P {
-    margin-left: 0vh;
-}
-
-#plughole-row-1, #plughole-row-2, #plughole-row-3 {
-    padding-bottom: 1vh;
-}
-
-.plughole {
-    margin-left: 4vh;
-    background-color: #000000;
-    height: 3vh;
-    width: 3vh;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2.5vh;
-    font-weight: bold;
-    color: rgb(238, 237, 237);
-    border: solid 6px rgb(250, 255, 206);
-    user-select: none;
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-}
-
-/* #plugkey-Q, #plughole-Q {
-    margin-left: 5vh;
-}
-
-#plugkey-P, #plughole-P {
-    margin-left: 1vh;
-} */
 
 #rotor-in-use .ui-droppable-active {
     background-color: #b4b4b4;
