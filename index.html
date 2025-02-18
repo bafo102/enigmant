@@ -16,22 +16,27 @@
     </div>
     <div id="main">
         <div id="div-left">
-            <div id="setting">
-                <div id="setting-rotor">
-                    <div id="setting-rotor-label">Rotor Order</div>
-                    <div id="setting-rotor-info">2 3 5</div>
+            <div id="setting-div">
+                <div id="setting-info">
+                    <button id="copy-setting"><i class="fa-solid fa-copy"></i></button>
                 </div>
-                <div id="setting-ring">
-                    <div id="setting-ring-label">Ring Setting</div>
-                    <div id="setting-ring-info">12 24 03</div>
-                </div>
-                <div id="setting-position">
-                    <div id="setting-position-label">Starting Position</div>
-                    <div id="setting-position-info">23 13 09</div>
-                </div>
-                <div id="setting-plug">
-                    <div id="setting-plug-label">Plugboard Connection</div>
-                    <div id="setting-plug-info">QI UE JS KD LA DP MC SC XL EK</div>
+                <div id="setting">
+                    <div id="setting-rotor">
+                        <div id="setting-rotor-label">Rotor Order</div>
+                        <div id="setting-rotor-detail" class="detail">- - -</div>
+                    </div>
+                    <div id="setting-ring">
+                        <div id="setting-ring-label">Ring Setting</div>
+                        <div id="setting-ring-detail" class="detail">-- -- --</div>
+                    </div>
+                    <div id="setting-position">
+                        <div id="setting-position-label">Rotor Positions</div>
+                        <div id="setting-position-detail" class="detail">-- -- --</div>
+                    </div>
+                    <div id="setting-plug">
+                        <div id="setting-plug-label">Plugboard Connections</div>
+                        <div id="setting-plug-detail" class="detail">-- -- -- -- -- -- -- -- -- --</div>
+                    </div>
                 </div>
             </div>
             <div id="rotorboard">
@@ -214,10 +219,32 @@
                         <div id="label-8">-</div>
                     </div>
                     <div id="rotor-in-use">
-                        <div id="rotor-holder-6" class="rotor-holder"></div>
-                        <div id="rotor-holder-7" class="rotor-holder"></div>
-                        <div id="rotor-holder-8" class="rotor-holder"></div>
+                        <div id="spin-up-row">
+                            <div id="spin-up-button-1"><i class="caret fa-solid fa-caret-up"></i></div>
+                            <div id="spin-up-button-2"><i class="caret fa-solid fa-caret-up"></i></div>
+                            <div id="spin-up-button-3"><i class="caret fa-solid fa-caret-up"></i></div>
+                        </div>
+                        <div id="lid"></div>
+                        <div id="rotor-in-use-holder">
+                            <div id="rotor-holder-6" class="rotor-holder"></div>
+                            <div id="rotor-holder-7" class="rotor-holder"></div>
+                            <div id="rotor-holder-8" class="rotor-holder"></div>
+                        </div>
+                        <div id="spin-down-row">
+                            <div id="spin-down-button-1"><i class="caret fa-solid fa-caret-down"></i></div>
+                            <div id="spin-down-button-2"><i class="caret fa-solid fa-caret-down"></i></div>
+                            <div id="spin-down-button-3"><i class="caret fa-solid fa-caret-down"></i></div>
+                        </div>
                     </div>
+                </div>
+                <div id="switch-box">
+                    <div id="switch-mark-ring" class="ready">Ring</div>
+                    <div id="switch" class="at-ring">
+                        <div id="switch-body">
+                            <div id="switch-head"></div>
+                        </div>
+                    </div>
+                    <div id="switch-mark-rotor">Rotor</div>
                 </div>
             </div>
             <div id="plugboard">

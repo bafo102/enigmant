@@ -53,28 +53,57 @@ button {
     border-right: 1px solid rgb(116, 107, 107);
 }
 
-#setting {
+#setting-div {
     background-color: #4B4B4B;
     border-bottom: 1px solid rgb(116, 107, 107);
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    padding: 3vh;
 }
 
-#setting > * > * {
-    color: white;
+#setting-info {
+    position: relative;
+    height: 2vh;
+}
+
+#copy-setting {
+    margin: 1vh;
+    position: absolute;
+    right: 0%;
+}
+
+#setting {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: bold;
-    font-family: 'Courier New', Courier, monospace;
 }
 
-#setting-label > * {
-    font-weight: bold;
+#setting-rotor-label,
+#setting-ring-label,
+#setting-position-label,
+#setting-plug-label {
+    margin: 2vh;
+    margin-bottom: 1vh;
+    color: white;
+    display: flex;
+    justify-content: center;
+    font-size: 1.1em;
+    align-items: center;
     font-family: 'Courier New', Courier, monospace;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
 }
+
+.detail {
+    padding: 1vh;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #2E2E2E;
+    margin: 0.5vh 2vh;
+    margin-bottom: 2vh;
+    text-align: center;
+}
+
+#setting-plug-detail {
+    min-width: 35vh;
+}
+
 
 /* ROTORBOARD */
 
@@ -82,12 +111,12 @@ button {
     background-color: #4B4B4B;
     border-bottom: 1px solid rgb(116, 107, 107);
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
 }
 
 #rotorboard > * {
-    margin: 4vh;
+    margin-bottom: 4vh;
     margin-top: 3vh;
 }
 
@@ -123,25 +152,82 @@ button {
       0 0 151px #fffb14;
 }
 
-#rotor-tray, #rotor-in-use {
-    background-color: var(--lighter-gray);
+#switch-mark-ring.ready, #switch-mark-rotor.ready {
+    color: #fffb14;
+    text-shadow:
+      0 0 7px #fff,
+      0 0 10px #fff,
+      0 0 21px #fff,
+      0 0 42px #fffb14,
+      0 0 82px #fffb14,
+      0 0 92px #fffb14,
+      0 0 102px #fffb14,
+      0 0 151px #fffb14;
+}
+
+#rotor-tray {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 0vh;
     background: linear-gradient(to bottom, #808080, #afafaf 10%, #999999 30%, #b2b2b2 50%, #d7d7d7 66% 75%, #8c8c8c 90% 95%);
-    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2),
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+    height: 28vh;
+    /* border: 1px solid red; */
 }
 
-/* #rotor-in-use {
-    background: linear-gradient(to bottom, #d4af37, #c2a15e 10%, #b89b3b 30%, #f0d68a 50%, #e3b757 66% 75%, #a67c29 90% 95%);
-    background: linear-gradient(to bottom, #f7e7b4, #f0d68a 10%, #e8c76a 30%, #e9c54a 50%, #f1d39c 66% 75%, #d4af37 90% 95%);
-    background: linear-gradient(to bottom, #ffc15d, #fce8b2 10%, #f8dc8e 30%, #f9d36b 50%, #fbe8a5 66% 75%, #e4b645 90% 95%);
-    background: linear-gradient(to bottom, #b76e4f, #c68a6b 10%, #d19a7a 30%, #e0b79e 50%, #f0c1a5 66% 75%, #d76d5e 90% 95%);
-} */
+#rotor-in-use {
+    margin-top: 0vh;
+    background: linear-gradient(to bottom, #808080, #afafaf 10%, #999999 30%, #b2b2b2 50%, #d7d7d7 66% 75%, #8c8c8c 90% 95%);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+    height: 30vh;
+    /* border: 1px solid blue; */
+}
 
-#rotor-tray > * + *, #rotor-in-use > * + * {
+#spin-up-row, #spin-down-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /* border: 1px solid blue; */
+    margin: 0 0.5vh;
+}
+
+#spin-up-row {
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+
+#spin-down-row {
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+
+#rotor-in-use .caret {
+    background: none;
+    cursor: pointer;
+    font-size: 1.5em;
+    /* border: 1px solid red; */
+    height: 1vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#lid {
+    /* z-index: 5; */
+    position: absolute;
+    height: 24vh;
+    width: 25vh;
+    background: linear-gradient(to bottom, #606060, #c0c0c0 10%, #8a8a8a 25%, #d1d1d1 55%, #777 80%, #3f3f3f);
+}
+
+#rotor-tray > * + *, #rotor-in-use-holder > * + * {
     margin-left: 0vh;
+}
+
+#rotor-in-use-holder {
+    display: flex;
+    /* border: 1px solid green; */
 }
 
 .rotor-holder {
@@ -162,7 +248,7 @@ button {
     align-items: center;
     background: linear-gradient(to bottom, #777, #4e4e4e 10%, #747373 30%, #666 50%, #888888 66% 75%, #555 90% 95%);
     overflow: hidden;
-    box-shadow: 2px 7px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 7px 6px rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
 
@@ -186,6 +272,58 @@ button {
     box-shadow: 0px 7px 6px rgba(0, 0, 0, 0.2);
     user-select: none;
 }
+
+#switch-box {
+    width: 5vh;
+    height: 8vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#switch {
+    width: 2.5vh;
+    height: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#switch.at-rotor {
+}
+
+#switch-head:hover {
+    transform: translateY(2.7vh);
+    transition: transform 0.3s;
+}
+
+#switch-head {
+    z-index: 2;
+    height: 2vh;
+    width: 3vh;
+    background: linear-gradient(to bottom, #5f5e5e, #bdbdbd, #9b9999, #e4e4e4, #5f5f5f);
+    user-select: none;
+}
+#switch-body {
+    height: 5vh;
+    width: 1.7vh;
+    border: 2px solid rgb(163, 163, 163);
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
+    background-color: #2E2E2E;
+    display: flex;
+}
+
+#switch-mark-ring, #switch-mark-rotor {
+    /* border: 1px solid red; */
+    margin: 0.7vh;
+    font-size: 1em;
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+}
+
 
 /* PLUGBOARD */
 
@@ -249,17 +387,6 @@ button {
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
-
-/* #plugkey-Q, #plughole-Q {
-    margin-left: 5vh;
-}
-
-#plugkey-P, #plughole-P {
-    margin-left: 1vh;
-} */
-
-
-
 
 #div-right {
     background-color: #4B4B4B   ;

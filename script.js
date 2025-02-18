@@ -63,7 +63,7 @@ $( function() {
             });
 
             // play sound
-            if ($(this).parent().attr('id') == "rotor-in-use") {
+            if ($(this).parent().attr('id') == "rotor-in-use-holder") {
                 dropInUseSound = new Audio(`sound/drop-in-use.mp3`);
                 dropInUseSound.play();
             } else {
