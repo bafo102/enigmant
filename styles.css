@@ -152,7 +152,7 @@ button {
       0 0 151px #fffb14;
 }
 
-#switch-mark-ring.ready, #switch-mark-rotor.ready {
+#switch-ring.ready, #switch-rotor.ready {
     color: #fffb14;
     text-shadow:
       0 0 7px #fff,
@@ -172,7 +172,7 @@ button {
     margin-top: 0vh;
     background: linear-gradient(to bottom, #808080, #afafaf 10%, #999999 30%, #b2b2b2 50%, #d7d7d7 66% 75%, #8c8c8c 90% 95%);
     box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
-    height: 28vh;
+    height: 30vh;
     /* border: 1px solid red; */
 }
 
@@ -213,12 +213,82 @@ button {
     align-items: center;
 }
 
+
+#lid-div {
+    /* transform-style: preserve-3d; */
+    z-index: auto;
+}
+
+.lid-open {
+    animation: openLid 0.3s;
+    display: none;
+}
+
+@keyframes openLid {
+    from {
+        display: flex;
+        transform: scale(1) translateZ(11vh);
+        opacity: 1;
+    }
+    to {
+        transform: scale(1.5) translateZ(12vh);
+        opacity: 0;
+        display: none;
+    }
+}
+
+.lid-closed {
+    display: flex;
+    animation: closeLid 0.3s;
+}
+
+@keyframes closeLid {
+    from {
+        display: none;
+        transform: scale(1.5);
+        opacity: 0;
+    }
+    to {
+        display: flex;
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+#lid-frames {
+    height: 23.7vh;
+    width: 25vh;
+    z-index: 7;
+    position: absolute;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    /* border: 1px solid blue; */
+}
+
+#lid-frames > * {
+    z-index: 6;
+    width: 7vh;
+    height: 3.8vh;
+    border: 4px white solid;
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2),
+                2px 3px 4px rgba(0, 0, 0, 0.5) inset;
+    background: none;
+}
+
 #lid {
-    /* z-index: 5; */
+    z-index: 5;
     position: absolute;
     height: 24vh;
     width: 25vh;
     background: linear-gradient(to bottom, #606060, #c0c0c0 10%, #8a8a8a 25%, #d1d1d1 55%, #777 80%, #3f3f3f);
+    clip-path: polygon(
+        0% 0%, 0% 100%,
+        4% 100%, 4% 43%, 32% 43%, 32% 56%, 4% 56%, 4% 100%,
+        36% 100%, 36% 43%, 64% 43%, 64% 56%, 36% 56%, 36% 100%,
+        68% 100%, 68% 43%, 96% 43%, 96% 56%, 68% 56%, 68% 100%,
+        100% 100%, 100% 0%
+        );
 }
 
 #rotor-tray > * + *, #rotor-in-use-holder > * + * {
@@ -280,6 +350,7 @@ button {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    user-select: none;
 }
 
 #switch {
@@ -291,11 +362,13 @@ button {
     cursor: pointer;
 }
 
-#switch.at-rotor {
+.at-rotor #switch-head {
+    transform: translateY(2.7vh);
+    transition: transform 0.3s;
 }
 
-#switch-head:hover {
-    transform: translateY(2.7vh);
+.at-ring #switch-head {
+    transform: translateY(0vh);
     transition: transform 0.3s;
 }
 
@@ -315,7 +388,7 @@ button {
     display: flex;
 }
 
-#switch-mark-ring, #switch-mark-rotor {
+#switch-ring, #switch-rotor {
     /* border: 1px solid red; */
     margin: 0.7vh;
     font-size: 1em;

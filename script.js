@@ -11,6 +11,10 @@ const label_7 = document.querySelector("#label-7");
 const label_8 = document.querySelector("#label-8");
 const keys = document.querySelectorAll(".key");
 let targetKey = '';
+const switchButton = document.querySelector("#switch");
+const lid = document.querySelector("#lid-div");
+const switchRing = document.querySelector("#switch-ring");
+const switchRotor = document.querySelector("#switch-rotor");
 
 // TARGET KEY
 function getTargetKey(event) {
@@ -56,10 +60,13 @@ $( function() {
 
             // make only in-use rotor to be spinnable
             document.querySelectorAll('#rotor-in-use .rotor-holder .rotor').forEach(rotor => {
-                rotor.addEventListener('wheel', spinRotor);
+                rotor.addEventListener('wheel', spinRing);
             });
             document.querySelectorAll('#rotor-tray .rotor-holder .rotor').forEach(rotor => {
-                rotor.removeEventListener('wheel', spinRotor);
+                rotor.removeEventListener('wheel', spinRing);
+            });
+            document.querySelectorAll('#lid-frames > *').forEach(frame => {
+                frame.addEventListener('wheel', spinRotor);
             });
 
             // play sound
@@ -137,11 +144,27 @@ function updateRotorLabel() {
     label_8.textContent = rotorInUse[3] == '-' ? '-' : rotorLabels[Number(rotorInUse[3])];
 }
     
-function spinRotor(event) {
-    // rotor
+function spinRing(event) {
+
+    // get rotor when scrolling on rotor
     rotorTarget = event.target.id;
+
+    // get rotor when scrolling on plate
     if (event.target.className.includes('plate')) {
         rotorTarget = event.target.parentNode.parentNode.id;
+    }
+    // get rotor when scrolling on lid frame
+    else if (rotorTarget == "lid-frame-1") {
+        rotorTarget = document.querySelector("#rotor-holder-6").firstElementChild.id;
+        console.log(rotorTarget);
+    }
+    else if (rotorTarget == "lid-frame-2") {
+        rotorTarget = document.querySelector("#rotor-holder-7").firstElementChild.id;
+        console.log(rotorTarget);
+    }
+    else if (rotorTarget == "lid-frame-3") {
+        rotorTarget = document.querySelector("#rotor-holder-8").firstElementChild.id;
+        console.log(rotorTarget);
     }
 
     // Prevent default scrolling
@@ -169,5 +192,39 @@ function spinRotor(event) {
     mouseNotchCount = 0;
 };
 
+function spinRotor(event) {
+    //
+}
 
+
+function toggleLid() {
+    if (switchButton.className == "at-ring") {
+        switchButton.className = "at-rotor";
+    }
+    else if (switchButton.className == "at-rotor") {
+        switchButton.className = "at-ring";
+    }
+
+    if (lid.className == "lid-open" || lid.className == "lid-start") {
+        lid.className = "lid-closed";
+        $( "#rotor-in-use .rotor-holder" ).droppable("disable");
+    }
+    else if (lid.className == "lid-closed") {
+        lid.className = "lid-open";
+        $( "#rotor-in-use .rotor-holder" ).droppable("enable");
+    }
+
+    if (switchRing.className == "ready") {
+        switchRing.className = "";
+        switchRotor.className = "ready";
+    }
+    else if (switchRotor.className == "ready") {
+        switchRotor.className = "";
+        switchRing.className = "ready";
+        
+    }
+
+}
+
+switchButton.addEventListener("click", toggleLid);
 
