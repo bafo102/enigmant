@@ -223,7 +223,6 @@ function toggleLid() {
         switchRing.className = "ready";
         
     }
-
 }
 
 switchButton.addEventListener("click", toggleLid);
