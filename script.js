@@ -1,6 +1,6 @@
-let rotorTray = ['0', '1', '2', '3', '4', '5'];
-let rotorInUse = ['0', '-', '-', '-']
-let rotorLabels = ['0', 'I', 'II', 'III', 'IV', 'V'];
+let rotorTrayArray = ['0', '1', '2', '3', '4', '5'];
+let rotorInUseArray = ['0', '-', '-', '-']
+let rotorLabelArray = ['0', 'I', 'II', 'III', 'IV', 'V'];
 const label_1 = document.querySelector("#label-1");
 const label_2 = document.querySelector("#label-2");
 const label_3 = document.querySelector("#label-3");
@@ -15,6 +15,9 @@ const switchButton = document.querySelector("#switch");
 const lid = document.querySelector("#lid-div");
 const switchRing = document.querySelector("#switch-ring");
 const switchRotor = document.querySelector("#switch-rotor");
+const carets = document.querySelectorAll(".caret");
+const inUseRotorHolder = document.querySelectorAll("#rotor-in-use-holder > *");
+const rotorTray = document.querySelectorAll("#rotor-tray > *");
 
 // TARGET KEY
 function getTargetKey(event) {
@@ -58,15 +61,25 @@ $( function() {
             // actually move the rotor inside the rotor-holder
             $( this ).append(ui.draggable);
 
-            // make only in-use rotor to be spinnable
+            // make rotors in use spinnable
+            // for scrolling when lid is open
             document.querySelectorAll('#rotor-in-use .rotor-holder .rotor').forEach(rotor => {
-                rotor.addEventListener('wheel', spinRing);
+                rotor.addEventListener('wheel', spinRingOrRotor);
             });
-            document.querySelectorAll('#rotor-tray .rotor-holder .rotor').forEach(rotor => {
-                rotor.removeEventListener('wheel', spinRing);
-            });
+
+            // for scrolling when lid is closed
             document.querySelectorAll('#lid-frames > *').forEach(frame => {
-                frame.addEventListener('wheel', spinRotor);
+                frame.addEventListener('wheel', spinRingOrRotor);
+            });
+
+            // for clicking caret buttons
+            document.querySelectorAll('.caret').forEach(button => {
+                button.addEventListener('click', spinRingOrRotorOneNotch);
+            });
+
+            // make rotors not in use unspinnable
+            document.querySelectorAll('#rotor-tray .rotor-holder .rotor').forEach(rotor => {
+                rotor.removeEventListener('wheel', spinRingOrRotor);
             });
 
             // play sound
@@ -91,7 +104,7 @@ $( function() {
             updateRotorLabel();
 
             // show readiness of rotors in use
-            if (rotorInUse[1] != "-" && rotorInUse[2] != "-" && rotorInUse[3] != "-") {
+            if (rotorInUseArray[1] != "-" && rotorInUseArray[2] != "-" && rotorInUseArray[3] != "-") {
                 document.querySelector("#rotor-label-right").classList.add("ready");
             } else {
                 document.querySelector("#rotor-label-right").classList.remove("ready");
@@ -101,8 +114,14 @@ $( function() {
 } );
 
 function updateHolderStatus() {
-    document.querySelectorAll(".rotor-holder").forEach(holder => {
+    document.querySelectorAll("#rotor-tray .rotor-holder").forEach(holder => {
         if (holder.children.length == 0) {
+            $( `#${holder.id}` ).droppable("enable");
+        }
+    });
+
+    document.querySelectorAll("#rotor-in-use-holder .rotor-holder").forEach(holder => {
+        if (holder.children.length == 0 && lid.className == "lid-open") {
             $( `#${holder.id}` ).droppable("enable");
         }
     });
@@ -110,61 +129,55 @@ function updateHolderStatus() {
 
 function updateRotorLabel() {
     // reset orders
-    rotorTray = ['0'];
-    rotorInUse = ['0'];
+    rotorTrayArray = ['0'];
+    rotorInUseArray = ['0'];
     // check rotor and update order
     document.querySelectorAll("#rotor-tray .rotor-holder").forEach(holder => {
         if (holder.children.length == 0) {
-            rotorTray.push("-");
+            rotorTrayArray.push("-");
         } else {
-            rotorTray.push(holder.firstElementChild.id[holder.firstElementChild.id.length - 1]);
+            rotorTrayArray.push(holder.firstElementChild.id[holder.firstElementChild.id.length - 1]);
         }
     });
 
     document.querySelectorAll("#rotor-in-use .rotor-holder").forEach(holder => {
         if (holder.children.length == 0) {
-            rotorInUse.push("-");
+            rotorInUseArray.push("-");
         } else {
-            rotorInUse.push(holder.firstElementChild.id[holder.firstElementChild.id.length - 1]);
+            rotorInUseArray.push(holder.firstElementChild.id[holder.firstElementChild.id.length - 1]);
         }
     });
 
-    console.log('rotorTray is: ', rotorTray);
-    console.log('rotorInUse is: ', rotorInUse);
-
     // update labels
-    label_1.textContent = rotorTray[1] == '-' ? '-' : rotorLabels[Number(rotorTray[1])];
-    label_2.textContent = rotorTray[2] == '-' ? '-' : rotorLabels[Number(rotorTray[2])];
-    label_3.textContent = rotorTray[3] == '-' ? '-' : rotorLabels[Number(rotorTray[3])];
-    label_4.textContent = rotorTray[4] == '-' ? '-' : rotorLabels[Number(rotorTray[4])];
-    label_5.textContent = rotorTray[5] == '-' ? '-' : rotorLabels[Number(rotorTray[5])];
+    label_1.textContent = rotorTrayArray[1] == '-' ? '-' : rotorLabelArray[Number(rotorTrayArray[1])];
+    label_2.textContent = rotorTrayArray[2] == '-' ? '-' : rotorLabelArray[Number(rotorTrayArray[2])];
+    label_3.textContent = rotorTrayArray[3] == '-' ? '-' : rotorLabelArray[Number(rotorTrayArray[3])];
+    label_4.textContent = rotorTrayArray[4] == '-' ? '-' : rotorLabelArray[Number(rotorTrayArray[4])];
+    label_5.textContent = rotorTrayArray[5] == '-' ? '-' : rotorLabelArray[Number(rotorTrayArray[5])];
 
-    label_6.textContent = rotorInUse[1] == '-' ? '-' : rotorLabels[Number(rotorInUse[1])];
-    label_7.textContent = rotorInUse[2] == '-' ? '-' : rotorLabels[Number(rotorInUse[2])];
-    label_8.textContent = rotorInUse[3] == '-' ? '-' : rotorLabels[Number(rotorInUse[3])];
+    label_6.textContent = rotorInUseArray[1] == '-' ? '-' : rotorLabelArray[Number(rotorInUseArray[1])];
+    label_7.textContent = rotorInUseArray[2] == '-' ? '-' : rotorLabelArray[Number(rotorInUseArray[2])];
+    label_8.textContent = rotorInUseArray[3] == '-' ? '-' : rotorLabelArray[Number(rotorInUseArray[3])];
 }
     
-function spinRing(event) {
-
+function spinRingOrRotor(event) {
     // get rotor when scrolling on rotor
-    rotorTarget = event.target.id;
+    rotorTargetId = event.target.id;
+    rotorTargetParentId = event.target.parentElement.id;
 
     // get rotor when scrolling on plate
     if (event.target.className.includes('plate')) {
-        rotorTarget = event.target.parentNode.parentNode.id;
+        rotorTargetId = event.target.parentNode.parentNode.id;
     }
     // get rotor when scrolling on lid frame
-    else if (rotorTarget == "lid-frame-1") {
-        rotorTarget = document.querySelector("#rotor-holder-6").firstElementChild.id;
-        console.log(rotorTarget);
+    else if (rotorTargetId == "lid-frame-1") {
+        rotorTargetId = document.querySelector("#rotor-holder-6").firstElementChild.id;
     }
-    else if (rotorTarget == "lid-frame-2") {
-        rotorTarget = document.querySelector("#rotor-holder-7").firstElementChild.id;
-        console.log(rotorTarget);
+    else if (rotorTargetId == "lid-frame-2") {
+        rotorTargetId = document.querySelector("#rotor-holder-7").firstElementChild.id;
     }
-    else if (rotorTarget == "lid-frame-3") {
-        rotorTarget = document.querySelector("#rotor-holder-8").firstElementChild.id;
-        console.log(rotorTarget);
+    else if (rotorTargetId == "lid-frame-3") {
+        rotorTargetId = document.querySelector("#rotor-holder-8").firstElementChild.id;
     }
 
     // Prevent default scrolling
@@ -177,32 +190,89 @@ function spinRing(event) {
     mouseNotchCount += Math.sign(event.deltaY);
     degreeToRotate = mouseNotchCount * 13.846;
 
-    // play sound
-    ringClickSound = new Audio(`sound/click.mp3`);
-    ringClickSound.play();
+    if (lid.className == "lid-open") {
+        ringSpinSound = new Audio(`sound/ring-spin.mp3`);
+        ringSpinSound.play();
+    }
+    else {
+        // play sound if spinning rotor
+        rotorSpinSound = new Audio(`sound/rotor-spin.mp3`);
+        rotorSpinSound.play();
+    }
 
-    // Update the rotation for each box
-    plates = document.querySelectorAll(`#${rotorTarget} .axis .plate`);
+    // Update the rotation for each plate visually
+    plates = document.querySelectorAll(`#${rotorTargetId} .axis .plate`);
     plates.forEach(plate => {
         plateCurrentDeg = plate.getAttribute('style').match(/rotateX\(([-+]?\d*\.?\d+)deg\)/)[1];
         plate.style.transform = `rotateX(${degreeToRotate + Number(plateCurrentDeg)}deg) translateZ(10.83vh)` ;
     });
-
-    degreeToRotate = 0;
-    mouseNotchCount = 0;
 };
 
-function spinRotor(event) {
-    //
+function spinRingOrRotorOneNotch(event) {
+    // Each notch can be considered as an event
+    degreeToRotate = 13.846;
+
+    // get rotor when scrolling on rotor
+    rotorTargetId = event.target.id;
+    rotorTargetParentId = event.target.parentElement.id;
+
+    // get rotor when clicking on spin button
+    if (rotorTargetParentId == "spin-up-button-1" || rotorTargetId == "spin-up-button-1") {
+        rotorTargetId = document.querySelector("#rotor-holder-6").firstElementChild.id;
+    }
+    else if (rotorTargetParentId == "spin-up-button-2" || rotorTargetId == "spin-up-button-2") {
+        rotorTargetId = document.querySelector("#rotor-holder-7").firstElementChild.id;
+    }
+    else if (rotorTargetParentId == "spin-up-button-3" || rotorTargetId == "spin-up-button-3") {
+        rotorTargetId = document.querySelector("#rotor-holder-8").firstElementChild.id;
+    }
+    else if (rotorTargetParentId == "spin-down-button-1" || rotorTargetId == "spin-down-button-1") {
+        rotorTargetId = document.querySelector("#rotor-holder-6").firstElementChild.id;
+        degreeToRotate = -13.846;
+    }
+    else if (rotorTargetParentId == "spin-down-button-2" || rotorTargetId == "spin-down-button-2") {
+        rotorTargetId = document.querySelector("#rotor-holder-7").firstElementChild.id;
+        degreeToRotate = -13.846;
+    }
+    else if (rotorTargetParentId == "spin-down-button-3" || rotorTargetId == "spin-down-button-3") {
+        rotorTargetId = document.querySelector("#rotor-holder-8").firstElementChild.id;
+        degreeToRotate = -13.846;
+    }
+    // Prevent default scrolling
+    event.preventDefault();
+
+    // play sound if spinning ring
+    if (lid.className == "lid-open") {
+        ringSpinSound = new Audio(`sound/ring-spin.mp3`);
+        ringSpinSound.play();
+    }
+    else {
+        // play sound if spinning rotor
+        rotorSpinSound = new Audio(`sound/rotor-spin.mp3`);
+        rotorSpinSound.play();
+    }
+
+    // Update the rotation for each plate visually
+    plates = document.querySelectorAll(`#${rotorTargetId} .axis .plate`);
+    plates.forEach(plate => {
+        plateCurrentDeg = plate.getAttribute('style').match(/rotateX\(([-+]?\d*\.?\d+)deg\)/)[1];
+        plate.style.transform = `rotateX(${degreeToRotate + Number(plateCurrentDeg)}deg) translateZ(10.83vh)` ;
+    });
 }
+    
+
 
 
 function toggleLid() {
     if (switchButton.className == "at-ring") {
         switchButton.className = "at-rotor";
+        lidCloseSound = new Audio(`sound/lid-close.mp3`);
+        lidCloseSound.play();
     }
     else if (switchButton.className == "at-rotor") {
         switchButton.className = "at-ring";
+        lidOpenSound = new Audio(`sound/lid-open.mp3`);
+        lidOpenSound.play();
     }
 
     if (lid.className == "lid-open" || lid.className == "lid-start") {
@@ -213,6 +283,12 @@ function toggleLid() {
         lid.className = "lid-open";
         $( "#rotor-in-use .rotor-holder" ).droppable("enable");
     }
+    // disable busy holder
+    inUseRotorHolder.forEach(holder => {
+        if (holder.children.length > 0) {
+            $(holder).droppable("disable");
+        }
+    });
 
     if (switchRing.className == "ready") {
         switchRing.className = "";
@@ -221,7 +297,6 @@ function toggleLid() {
     else if (switchRotor.className == "ready") {
         switchRotor.className = "";
         switchRing.className = "ready";
-        
     }
 }
 
