@@ -27,8 +27,12 @@ body {
     border-bottom: 1px solid rgb(116, 107, 107);
     height: 4vh;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
+}
+
+#header > * {
+    margin: 0.5vw;
 }
 
 a {
@@ -419,7 +423,7 @@ button {
 
 #plugboard {
     background-color: #4B4B4B;
-    border-bottom: 1px solid rgb(116, 107, 107);
+    /* border-bottom: 1px solid rgb(116, 107, 107); */
 }
 
 #plugboard > div > * {
@@ -488,7 +492,19 @@ button {
 #message {
     background-color: #4B4B4B;
     border-bottom: 1px solid rgb(116, 107, 107);
-    height: 29vh;
+    height: 39vh;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#input, #output {
+    background-color: #2E2E2E;
+    width: 48%;
+    height: 96%;
+    padding: 2vh;
+    resize: none;
+    color: gray;
 }
 
 /* LAMPBOARD */
@@ -565,7 +581,7 @@ button {
 
 #keyboard {
     background-color: #4B4B4B;
-    border-bottom: 1px solid rgb(116, 107, 107);
+    /* border-bottom: 1px solid rgb(116, 107, 107); */
     /* height: 25vh; */
 }
 

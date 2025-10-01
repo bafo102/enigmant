@@ -9,10 +9,10 @@
 <body>
     <div id="header">
         <div id="video"><a href="https://www.youtube.com/watch?v=ybkkiGtJmkM">What is this?</a></div>
-        <button id="reset-button" title="Reset everything">Reset</button>
+        <button id="reset-button" title="Reset everything"><i class="fa-solid fa-rotate-right"></i></button>
         <button id="mute-button" title="Silent mode"><i class="fa-solid fa-volume-xmark"></i></button>
-        <button id="undo-button" title="Go back one keystroke"><i class="fa-solid fa-rotate-left"></i></button>
-        <button id="redo-button" title="Go forward one keystroke"><i class="fa-solid fa-rotate-right"></i></button>
+        <!-- <button id="undo-button" title="Go back one keystroke"><i class="fa-solid fa-rotate-left"></i></button>
+        <button id="redo-button" title="Go forward one keystroke"><i class="fa-solid fa-rotate-right"></i></button> -->
     </div>
     <div id="main">
         <div id="div-left">
@@ -328,8 +328,8 @@
         </div>
         <div id="div-right">
             <div id="message">
-                <div id="input"></div>
-                <div id="output"></div>
+                <textarea id="input" placeholder="Put the encrypted message here, just so you don't forget it."></textarea>
+                <textarea id="output" placeholder="Write the letter from the lighted bulb below, each time you press a key."></textarea>
             </div>
             <div id="lampboard">
                 <div id="lamprow-1">
@@ -399,11 +399,16 @@
                     <div id="key-L" class="key">L</div>
                 </div>
             </div>
-            
+                
+                
         </div>
     </div>
+    <!-- <script src="patchbay/dist/patchbay.umd.js"></script> -->
+    <!-- <script src="patchbay/src/Patchbay.js"></script> -->
+
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
     <script src="script.js"></script>
+    <script src="cables.js"></script>
 </body>
 </html>

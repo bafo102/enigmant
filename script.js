@@ -302,3 +302,38 @@ function toggleLid() {
 
 switchButton.addEventListener("click", toggleLid);
 
+
+function getSettings() {
+    // get rotor order
+    // get ring setting
+    // get rotor positions
+    // get plugboard connections
+}
+
+// start default patchbay
+let patchbay;
+document.addEventListener("DOMContentLoaded", function () {
+    patchbay = new Patchbay({
+    snapRadius: 100,
+    });
+});
+
+cableConfig = {
+    container: document.querySelector("#plugboard"),
+    iterations: 6,
+    color: "#bd1a1aff",
+    slack: 1,
+    segments: 20,
+    snapRadius: 50,
+    dragHandleSize: 20,
+    lineThickness: 7,
+    snapElementSelector: ".plughole",
+    zIndex: 0,
+}
+
+document.querySelectorAll(".plughole").forEach((plughole) => {
+    plughole.addEventListener("click", () => {
+        patchbay.startCable(plughole, cableConfig);
+        patchbay.start(); // keep this to animate the cable
+    });
+})
