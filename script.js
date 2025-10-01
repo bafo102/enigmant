@@ -1,5 +1,6 @@
 let rotorTrayArray = ['0', '1', '2', '3', '4', '5'];
-let rotorInUseArray = ['0', '-', '-', '-']
+let rotorInUseArray = ['0', '-', '-', '-'];
+let ringSettingArray = ['0', '--', '--', '--'];
 let rotorLabelArray = ['0', 'I', 'II', 'III', 'IV', 'V'];
 const label_1 = document.querySelector("#label-1");
 const label_2 = document.querySelector("#label-2");
@@ -101,14 +102,17 @@ $( function() {
                 at: "left top",
                 of: $(this)
             }),
-            updateRotorLabel();
+            updateRotorData();
+            updateRingData();
 
             // show readiness of rotors in use
-            if (rotorInUseArray[1] != "-" && rotorInUseArray[2] != "-" && rotorInUseArray[3] != "-") {
-                document.querySelector("#rotor-label-right").classList.add("ready");
-            } else {
-                document.querySelector("#rotor-label-right").classList.remove("ready");
-            }
+            // if (rotorInUseArray[1] != "-" && rotorInUseArray[2] != "-" && rotorInUseArray[3] != "-") {
+            //     document.querySelector("#rotor-label-right").classList.add("ready");
+            //     document.querySelector("#setting-rotor-label").classList.add("ready");
+            // } else {
+            //     document.querySelector("#rotor-label-right").classList.remove("ready");
+            //     document.querySelector("#setting-rotor-label").classList.remove("ready");
+            // }
         }
     });
 } );
@@ -127,10 +131,11 @@ function updateHolderStatus() {
     });
 }
 
-function updateRotorLabel() {
+function updateRotorData() {
     // reset orders
     rotorTrayArray = ['0'];
     rotorInUseArray = ['0'];
+
     // check rotor and update order
     document.querySelectorAll("#rotor-tray .rotor-holder").forEach(holder => {
         if (holder.children.length == 0) {
@@ -148,7 +153,7 @@ function updateRotorLabel() {
         }
     });
 
-    // update labels
+    // update rotor labels
     label_1.textContent = rotorTrayArray[1] == '-' ? '-' : rotorLabelArray[Number(rotorTrayArray[1])];
     label_2.textContent = rotorTrayArray[2] == '-' ? '-' : rotorLabelArray[Number(rotorTrayArray[2])];
     label_3.textContent = rotorTrayArray[3] == '-' ? '-' : rotorLabelArray[Number(rotorTrayArray[3])];
@@ -158,8 +163,39 @@ function updateRotorLabel() {
     label_6.textContent = rotorInUseArray[1] == '-' ? '-' : rotorLabelArray[Number(rotorInUseArray[1])];
     label_7.textContent = rotorInUseArray[2] == '-' ? '-' : rotorLabelArray[Number(rotorInUseArray[2])];
     label_8.textContent = rotorInUseArray[3] == '-' ? '-' : rotorLabelArray[Number(rotorInUseArray[3])];
+
+    // update rotor order
+    document.querySelector('#setting-rotor-detail').textContent = `${rotorInUseArray[1]} ${rotorInUseArray[2]} ${rotorInUseArray[3]}`;
 }
-    
+
+function updateRingData() {
+    // reset rings
+    ringSettingArray = ['0'];
+
+    // check ring and update ring setting
+    document.querySelectorAll("#rotor-in-use .rotor-holder").forEach(holder => {
+        if (holder.children.length == 0) {
+            ringSettingArray.push("--");
+        } else {
+            ringSettingArray.push(holder.firstElementChild.dataset.ringSetting);
+        }
+    });
+
+    // update ring setting
+    document.querySelector('#setting-ring-detail').textContent = `${ringSettingArray[1]} ${ringSettingArray[2]} ${ringSettingArray[3]}`;
+}
+
+function updateSettings() {
+    // get rotor order
+    rotorOder = `${rotorInUseArray[1]}${rotorInUseArray[2]}${rotorInUseArray[3]}`;
+    // get ring setting (wheel cuộn xuống thì nhanh tới notch hơn => +1)
+    ringSetting = `${ringSettingArray[1]}${ringSettingArray[2]}${ringSettingArray[3]}`;
+    // get rotor positions
+    // get plugboard connections
+    console.log(rotorOder);
+    console.log(ringSetting);
+}
+
 function spinRingOrRotor(event) {
     // get rotor when scrolling on rotor
     rotorTargetId = event.target.id;
@@ -187,7 +223,7 @@ function spinRingOrRotor(event) {
     mouseNotchCount = 0;
     degreeToRotate = 0;
 
-    mouseNotchCount += Math.sign(event.deltaY);
+    mouseNotchCount += Math.sign(event.deltaY); // 1 if scroll down, -1 if scroll up
     degreeToRotate = mouseNotchCount * 13.846;
 
     if (lid.className == "lid-open") {
@@ -206,10 +242,20 @@ function spinRingOrRotor(event) {
         plateCurrentDeg = plate.getAttribute('style').match(/rotateX\(([-+]?\d*\.?\d+)deg\)/)[1];
         plate.style.transform = `rotateX(${degreeToRotate + Number(plateCurrentDeg)}deg) translateZ(10.83vh)` ;
     });
+
+    // Change the ring dataset for rotor
+    // this is for ring so we need to add a condition
+    currentRingSetting = Number(document.querySelector(`#${rotorTargetId}`).dataset.ringSetting);
+    newRingSetting = String(((mouseNotchCount + currentRingSetting) % 26) < 0 ? 26 + ((mouseNotchCount + currentRingSetting) % 26) : ((mouseNotchCount + currentRingSetting) % 26)).padStart(2, '0');
+    document.querySelector(`#${rotorTargetId}`).dataset.ringSetting = newRingSetting;
+
+    // Update ring data
+    updateRingData();
 };
 
 function spinRingOrRotorOneNotch(event) {
     // Each notch can be considered as an event
+    mouseNotchCount = 0;
     degreeToRotate = 13.846;
 
     // get rotor when scrolling on rotor
@@ -219,24 +265,30 @@ function spinRingOrRotorOneNotch(event) {
     // get rotor when clicking on spin button
     if (rotorTargetParentId == "spin-up-button-1" || rotorTargetId == "spin-up-button-1") {
         rotorTargetId = document.querySelector("#rotor-holder-6").firstElementChild.id;
+        mouseNotchCount = 1;
     }
     else if (rotorTargetParentId == "spin-up-button-2" || rotorTargetId == "spin-up-button-2") {
         rotorTargetId = document.querySelector("#rotor-holder-7").firstElementChild.id;
+        mouseNotchCount = 1;
     }
     else if (rotorTargetParentId == "spin-up-button-3" || rotorTargetId == "spin-up-button-3") {
         rotorTargetId = document.querySelector("#rotor-holder-8").firstElementChild.id;
+        mouseNotchCount = 1;
     }
     else if (rotorTargetParentId == "spin-down-button-1" || rotorTargetId == "spin-down-button-1") {
         rotorTargetId = document.querySelector("#rotor-holder-6").firstElementChild.id;
         degreeToRotate = -13.846;
+        mouseNotchCount = -1;
     }
     else if (rotorTargetParentId == "spin-down-button-2" || rotorTargetId == "spin-down-button-2") {
         rotorTargetId = document.querySelector("#rotor-holder-7").firstElementChild.id;
         degreeToRotate = -13.846;
+        mouseNotchCount = -1;
     }
     else if (rotorTargetParentId == "spin-down-button-3" || rotorTargetId == "spin-down-button-3") {
         rotorTargetId = document.querySelector("#rotor-holder-8").firstElementChild.id;
         degreeToRotate = -13.846;
+        mouseNotchCount = -1;
     }
     // Prevent default scrolling
     event.preventDefault();
@@ -258,10 +310,15 @@ function spinRingOrRotorOneNotch(event) {
         plateCurrentDeg = plate.getAttribute('style').match(/rotateX\(([-+]?\d*\.?\d+)deg\)/)[1];
         plate.style.transform = `rotateX(${degreeToRotate + Number(plateCurrentDeg)}deg) translateZ(10.83vh)` ;
     });
+
+    // Change the ring dataset for rotor
+    currentRingSetting = Number(document.querySelector(`#${rotorTargetId}`).dataset.ringSetting);
+    newRingSetting = String(((mouseNotchCount + currentRingSetting) % 26) < 0 ? 26 + ((mouseNotchCount + currentRingSetting) % 26) : ((mouseNotchCount + currentRingSetting) % 26)).padStart(2, '0');
+    document.querySelector(`#${rotorTargetId}`).dataset.ringSetting = newRingSetting;
+
+    // Update ring data
+    updateRingData();
 }
-    
-
-
 
 function toggleLid() {
     if (switchButton.className == "at-ring") {
@@ -302,14 +359,6 @@ function toggleLid() {
 
 switchButton.addEventListener("click", toggleLid);
 
-
-function getSettings() {
-    // get rotor order
-    // get ring setting
-    // get rotor positions
-    // get plugboard connections
-}
-
 // start default patchbay
 let patchbay;
 document.addEventListener("DOMContentLoaded", function () {
@@ -331,6 +380,7 @@ cableConfig = {
     zIndex: 0,
 }
 
+// add eventlistent to all plugholes
 document.querySelectorAll(".plughole").forEach((plughole) => {
     plughole.addEventListener("click", () => {
         patchbay.startCable(plughole, cableConfig);

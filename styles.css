@@ -143,19 +143,6 @@ button {
     text-align: center;
 }
 
-.ready > * {
-    color: #fffb14;
-    text-shadow:
-      0 0 7px #fff,
-      0 0 10px #fff,
-      0 0 21px #fff,
-      0 0 42px #fffb14,
-      0 0 82px #fffb14,
-      0 0 92px #fffb14,
-      0 0 102px #fffb14,
-      0 0 151px #fffb14;
-}
-
 #switch-ring.ready, #switch-rotor.ready {
     color: #fffb14;
     text-shadow:
@@ -504,7 +491,20 @@ button {
     height: 96%;
     padding: 2vh;
     resize: none;
-    color: gray;
+    color: lightgray;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 1.3em;
+    text-transform: uppercase;
+}
+
+#input::placeholder, #output::placeholder {
+    text-transform: none;
+}
+
+#input:focus, #output:focus {
+    outline: none;
+    color: white;
 }
 
 /* LAMPBOARD */
