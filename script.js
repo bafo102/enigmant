@@ -6,6 +6,7 @@ let rotorLabelArray = ['0', 'I', 'II', 'III', 'IV', 'V'];
 let rotorActiveOne;
 let rotorActiveTwo;
 let rotorActiveThree;
+let plugholePairs = [];
 const plateDegrees = [
     "0deg",
     "13.846deg",
@@ -529,7 +530,7 @@ document.addEventListener("DOMContentLoaded", function () {
 cableConfig = {
     container: document.querySelector("#plugboard"),
     iterations: 6,
-    color: "#bd1a1aff",
+    color: "#2e2e2e",
     slack: 1,
     segments: 20,
     snapRadius: 50,
@@ -546,6 +547,15 @@ document.querySelectorAll(".plughole").forEach((plughole) => {
         patchbay.start(); // keep this to animate the cable
     });
 })
+
+// this function is added in cables.js
+function updatePlugholePairings() {
+    plugholePairs = [];
+    document.querySelectorAll('.cable').forEach(cable => {
+        plugholePairs.push([cable.dataset.startingPlug, cable.dataset.endingPlug]);
+    });
+    console.log(plugholePairs);
+};
 
 
 // key input > plubboard > first rotor > second rotor > third rotor > reflector > third rotor > second rotor > first rotor > plubboard > bulb

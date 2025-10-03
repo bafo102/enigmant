@@ -75,16 +75,25 @@ class Cable {
 
   createMainElement() {
     const element = document.createElement("div");
-    element.classList.add("cable-container");
+    element.classList.add("cable");
     element.style.position = "fixed";
     element.style.top = "0";
     element.style.left = "0";
     element.style.pointerEvents = "none";
+    // console.log(event.target);
     return element;
   }
 
   removeMainElement() { // remove the cable
     this.element.remove();
+  }
+
+  addStartingPlug(startPoint) {
+    this.element.dataset.startingPlug = startPoint.id[startPoint.id.length - 1];
+  }
+
+  addEndingPlug(snapTarget) {
+    this.element.dataset.endingPlug = snapTarget.id[snapTarget.id.length - 1];
   }
 
   initializePoints() {
@@ -148,6 +157,9 @@ class Cable {
 
     document.addEventListener("mousemove", (e) => this.drag(e));
     document.addEventListener("mouseup", (e) => this.stopDragging(e));
+    
+    // update plughole pairings
+    document.addEventListener("mouseup", () => updatePlugholePairings());
   }
 
   createDragHandle() {
@@ -204,6 +216,9 @@ class Cable {
       const center = this.getElementCenter(snapTarget);
       draggedPoint.x = center.x;
       draggedPoint.y = center.y;
+
+      // add ending plughole
+      this.addEndingPlug(snapTarget);
     }
 
     else {
@@ -249,7 +264,6 @@ class Cable {
     }
 
     // Only return if closestElement exist
-    console.log(closestElement);
     return closestElement !== null ? closestElement : null;
   }
 
@@ -480,6 +494,9 @@ class Patchbay {
 
     cable.startDragging("end");
     cable.update();
+
+    // add starting plughole
+    cable.addStartingPlug(startPoint);
 
     this.cables.push(cable);
     this.root.appendChild(cable.element);
