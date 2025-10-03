@@ -1,0 +1,20 @@
+ROTOR ORDER
+- assign left, mid, right rotor objects if there is a rotor in holder				V
+
+RING
+spinRing
+- if hover on plates										V
+- update notch by calculate the offset with the current ring settings, at the same time when calculation ring setting
+
+spinRingOneNotch
+- if click on button while lid is open								V
+
+ROTOR
+spinRotor											V
+- if hover on lid										V
+
+spinRotorOneNotch										
+- if click on button whie lid is closed								V
+
+
+style caret

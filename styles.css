@@ -309,7 +309,7 @@ button {
     background: linear-gradient(to bottom, #777, #4e4e4e 10%, #747373 30%, #666 50%, #888888 66% 75%, #555 90% 95%);
     overflow: hidden;
     box-shadow: 0px 7px 6px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
+    cursor: move;
 }
 
 .axis {
@@ -500,6 +500,7 @@ button {
 
 #input::placeholder, #output::placeholder {
     text-transform: none;
+    user-select: none;
 }
 
 #input:focus, #output:focus {
@@ -512,6 +513,7 @@ button {
 #lampboard {
     background-color: #4B4B4B;
     border-bottom: 1px solid rgb(116, 107, 107);
+    user-select: none;
     /* height: 25vh; */
 }
 
@@ -519,6 +521,7 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
+    user-select: none;
     /* border: 1px solid red; */
 }
 
