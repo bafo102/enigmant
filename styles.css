@@ -71,6 +71,7 @@ button {
     margin: 1vh;
     position: absolute;
     right: 0%;
+    cursor: pointer;
 }
 
 #setting {
@@ -473,6 +474,7 @@ button {
     background-color: #4B4B4B   ;
     width: 50vw;
     height: 100vh;
+    user-select: none;
 }
 
 /* MESSAGE */

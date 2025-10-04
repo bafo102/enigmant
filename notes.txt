@@ -16,5 +16,7 @@ spinRotor											V
 spinRotorOneNotch										
 - if click on button whie lid is closed								V
 
+PLUGBOARD
+- assign pairings
 
 style caret

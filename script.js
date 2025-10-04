@@ -3,10 +3,10 @@ let rotorInUseArray = ['0', '-', '-', '-'];
 let ringSettingArray = ['0', '--', '--', '--'];
 let rotorPositionArray = ['0', '--', '--', '--'];
 let rotorLabelArray = ['0', 'I', 'II', 'III', 'IV', 'V'];
-let rotorActiveOne;
-let rotorActiveTwo;
-let rotorActiveThree;
-let plugholePairs = [];
+let plugboardConnectionArray = [];
+let rotorActiveLeft;
+let rotorActiveMid;
+let rotorActiveRight;
 const plateDegrees = [
     "0deg",
     "13.846deg",
@@ -193,9 +193,9 @@ function updateRotorOrder() {
     label_8.textContent = rotorInUseArray[3] == '-' ? '-' : rotorLabelArray[Number(rotorInUseArray[3])];
 
     // assign rotors
-    rotorActiveOne = rotorInUseArray[1] == '-' ? undefined : allRotorsDefault[rotorInUseArray[1]];
-    rotorActiveTwo = rotorInUseArray[2] == '-' ? undefined : allRotorsDefault[rotorInUseArray[2]];
-    rotorActiveThree = rotorInUseArray[2] == '-' ? undefined : allRotorsDefault[rotorInUseArray[3]];
+    rotorActiveLeft = rotorInUseArray[1] == '-' ? undefined : Object.assign({}, allRotorsDefault[rotorInUseArray[1]]);
+    rotorActiveMid = rotorInUseArray[2] == '-' ? undefined : Object.assign({}, allRotorsDefault[rotorInUseArray[2]]);
+    rotorActiveRIght = rotorInUseArray[2] == '-' ? undefined : Object.assign({}, allRotorsDefault[rotorInUseArray[3]]);
 
     // update rotor order setting
     document.querySelector('#setting-rotor-detail').textContent = `${rotorInUseArray[1]} ${rotorInUseArray[2]} ${rotorInUseArray[3]}`;
@@ -239,17 +239,62 @@ function updateRotorPosition() {
     }
 }
 
-function updateSettings() {
+
+
+// this function is added in cables.js
+function updatePlugboardConnections() {
+    plugboardConnectionArray = [];
+    allCables = document.querySelectorAll('.cable');
+
+    if (document.querySelectorAll('.cable').length == 11) {
+        allCables[10].remove();
+    }
+
+    allCables = document.querySelectorAll('.cable');
+    allCables.forEach(cable => {
+        plugboardConnectionArray.push(`${cable.dataset.plugOne}${cable.dataset.plugTwo}`);
+    });
+    
+    plugboardPairs = allCables.length;
+    
+    plugboardConnectionsToShow = Array.from(plugboardConnectionArray);
+    for (i = 0; i < (10 - plugboardPairs); i++) {
+        plugboardConnectionsToShow.push('--');
+    }
+    // update textContent
+    document.querySelector('#setting-plug-detail').textContent = plugboardConnectionsToShow.join(' ');
+
+    // update all plugholes availability
+    allPlugholes = document.querySelectorAll('.plughole');
+    allPlugholes.forEach(plughole => plughole.className = 'plughole'); // reset all plughole classes
+    plugboardConnectionString = plugboardConnectionArray.join('');
+    plugboardConnectionStringLength = plugboardConnectionString.length;
+
+    for (j = 0; j < plugboardConnectionStringLength; j++) {
+        document.querySelector(`#plughole-${plugboardConnectionString[j]}`).className = 'plughole plugged';
+    }
+};
+
+
+function getSettings() {
     // get rotor order
-    rotorOrder = `${rotorInUseArray[1]}${rotorInUseArray[2]}${rotorInUseArray[3]}`;
+    rotorOrder = `${rotorInUseArray[1]} ${rotorInUseArray[2]} ${rotorInUseArray[3]}`;
     // get ring setting (wheel cuộn xuống thì nhanh tới notch hơn => +1)
-    ringSetting = `${ringSettingArray[1]}${ringSettingArray[2]}${ringSettingArray[3]}`;
+    ringSetting = `${ringSettingArray[1]} ${ringSettingArray[2]} ${ringSettingArray[3]}`;
     // get rotor positions
-    rotorPosition = `${rotorPositionArray[1]}${rotorPositionArray[2]}${rotorPositionArray[3]}`;
+    rotorPosition = `${rotorPositionArray[1]} ${rotorPositionArray[2]} ${rotorPositionArray[3]}`;
     // get plugboard connections
-    console.log(rotorOrder);
-    console.log(ringSetting);
+    plugboardConnection = plugboardConnectionArray.join(' ')
+    // combine to get setting
+    setting = `${rotorOrder} - ${ringSetting} - ${rotorPosition} - ${plugboardConnection}`;
+    console.log(setting);
+    return setting
 }
+
+document.querySelector('#copy-setting').addEventListener('click', () => {
+    navigator.clipboard.writeText(getSettings());
+    alert(`Setting copied: ${getSettings()}`);
+});
 
 function spinRing(event) {
     // get rotor when scrolling on rotor
@@ -534,9 +579,9 @@ cableConfig = {
     slack: 1,
     segments: 20,
     snapRadius: 50,
-    dragHandleSize: 20,
+    dragHandleSize: 22,
     lineThickness: 7,
-    snapElementSelector: ".plughole",
+    snapTargetSelector: ".plughole:not(.plugged)",
     zIndex: 0,
 }
 
@@ -548,18 +593,9 @@ document.querySelectorAll(".plughole").forEach((plughole) => {
     });
 })
 
-// this function is added in cables.js
-function updatePlugholePairings() {
-    plugholePairs = [];
-    document.querySelectorAll('.cable').forEach(cable => {
-        plugholePairs.push([cable.dataset.startingPlug, cable.dataset.endingPlug]);
-    });
-    console.log(plugholePairs);
-};
-
 
 // key input > plubboard > first rotor > second rotor > third rotor > reflector > third rotor > second rotor > first rotor > plubboard > bulb
-const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+const inputWheel = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
 const rotorOneDefault = {
     left: [5, 15, 10, 12, 6, 17, 2, 18, 21, 9, 3, 20, 22, 0, 8, 23, 19, 4, 14, 16, 24, 1, 7, 13, 25, 11], 

@@ -48,7 +48,8 @@ class Cable {
     segments: 20,
     slack: 1.1,
     snapRadius: 100,
-    snapTargetSelector: ".plughole",
+    // snapTargetSelector: ".plughole",
+    snapTargetSelector: ".plughole:not(.plugged)",
     draggable: true,
   };
 
@@ -63,7 +64,7 @@ class Cable {
     this.isDragging = false;
     this.draggedEnd = null;
 
-    this.element = this.createMainElement();
+    this.element = this.createCableElement();
     this.points = this.initializePoints();
     this.segmentElements = this.createSegmentElements();
 
@@ -73,7 +74,7 @@ class Cable {
     }
   }
 
-  createMainElement() {
+  createCableElement() {
     const element = document.createElement("div");
     element.classList.add("cable");
     element.style.position = "fixed";
@@ -86,14 +87,6 @@ class Cable {
 
   removeMainElement() { // remove the cable
     this.element.remove();
-  }
-
-  addStartingPlug(startPoint) {
-    this.element.dataset.startingPlug = startPoint.id[startPoint.id.length - 1];
-  }
-
-  addEndingPlug(snapTarget) {
-    this.element.dataset.endingPlug = snapTarget.id[snapTarget.id.length - 1];
   }
 
   initializePoints() {
@@ -159,17 +152,18 @@ class Cable {
     document.addEventListener("mouseup", (e) => this.stopDragging(e));
     
     // update plughole pairings
-    document.addEventListener("mouseup", () => updatePlugholePairings());
+    // document.addEventListener("mouseup", () => updatePlugboardConnections());
   }
 
   createDragHandle() {
     const handle = document.createElement("div");
     handle.classList.add("cable-drag-handle");
+    // handleOne.id = 'cable-drag-handle-one';
     handle.style.width = `${this.config.dragHandleSize}px`;
     handle.style.height = `${this.config.dragHandleSize}px`;
     handle.style.position = "absolute";
     handle.style.borderRadius = "50%";
-    handle.style.backgroundColor = "transparent";
+    handle.style.backgroundColor = "gray";
     handle.style.pointerEvents = "all";
     handle.style.cursor = "move";
     handle.style.zIndex = "9999";
@@ -217,8 +211,9 @@ class Cable {
       draggedPoint.x = center.x;
       draggedPoint.y = center.y;
 
-      // add ending plughole
-      this.addEndingPlug(snapTarget);
+      // update plug datasets
+      this.element.dataset.plugOne = this.start.id[this.start.id.length - 1];
+      this.element.dataset.plugTwo = this.end.id[this.end.id.length - 1];
     }
 
     else {
@@ -228,6 +223,9 @@ class Cable {
     this.isDragging = false;
     this.draggedEnd = null;
     this.update();
+
+    updatePlugboardConnections();
+    // console.log(this);
   }
 
   findSnapTarget(x, y) {
@@ -396,8 +394,7 @@ class Patchbay {
     snapRadius: 100,
     dragHandleSize: 20,
     lineThickness: 12,
-    // snapElementSelector: ".cable-connector",
-    snapElementSelector: ".plughole",
+    // snapElementSelector: ".plughole:not(.plughole.plugged)",
     zIndex: 9999,
   };
 
@@ -419,7 +416,8 @@ class Patchbay {
   createRootElement() {
     const root = document.createElement("div");
 
-    root.classList.add("patchbay-container");
+    root.classList.add("cable-container");
+    root.id = 'cable-container';
     root.style.position = "fixed";
     root.style.top = "0";
     root.style.bottom = "0";
@@ -494,9 +492,6 @@ class Patchbay {
 
     cable.startDragging("end");
     cable.update();
-
-    // add starting plughole
-    cable.addStartingPlug(startPoint);
 
     this.cables.push(cable);
     this.root.appendChild(cable.element);
