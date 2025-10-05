@@ -20,3 +20,50 @@ PLUGBOARD
 - assign pairings
 
 style caret
+
+
+
+// Update the rotation for each plate visually
+    plates = document.querySelectorAll(`#${rotorTargetId} .axis .plate`);
+    plates.forEach(plate => {
+        plateCurrentPosition = Number(plate.dataset.platePosition);
+        plateNewPosition = 0;
+        
+        // if scroll up (wheel goes down, ring value increases)
+        if (shift < 0) {
+            plateNewPosition = (plateCurrentPosition - shift) % 26;
+            console.log('plateNewPosition', plateNewPosition);
+        }
+        // if scroll down (wheel goes up, ring value decreases)
+        else {
+            plateNewPosition = (plateCurrentPosition - shift + 26) % 26;
+            console.log('plateNewPosition', plateNewPosition);
+        }
+
+        plateNewDeg = plateDegrees[plateNewPosition];
+        plate.dataset.platePosition = String(plateNewPosition);
+        plate.style.transform = `rotateX(${plateNewDeg}) translateZ(10.83vh)`;
+
+        // Update rotor position dataset
+        if (plateNewPosition == 0) {
+            document.querySelector(`#${rotorTargetId}`).dataset.rotorPosition = plate.textContent.match(/\d+/)[0];
+        }
+    });
+
+    // Update ring dataset for rotor
+    currentRingSetting = Number(document.querySelector(`#${rotorTargetId}`).dataset.ringSetting);
+    newRingSetting = 0;
+    if (shift < 0) { // if scroll up (wheel goes down, ring value increases)
+        newRingSetting = (currentRingSetting - shift) % 26;
+    }
+    else { // if scroll down (wheel goes up, ring value decreases)
+        newRingSetting = (currentRingSetting - shift + 26) % 26;
+    }
+
+    // newRingSetting = String(((currentRingSetting + mouseNotchCount) % 26) >= 0 ? ((currentRingSetting + mouseNotchCount) % 26) : 26 + ((currentRingSetting + mouseNotchCount) % 26)).padStart(2, '0');
+    document.querySelector(`#${rotorTargetId}`).dataset.ringSetting = newRingSetting;
+
+    // Update notch position
+    // notchPosition = allRotors[Number(rotorTargetId[rotorTargetId.length - 1])].notch.indexOf('notch');
+    
+    // console.log('notch ', notchPosition);

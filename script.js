@@ -54,6 +54,75 @@ const carets = document.querySelectorAll(".caret");
 const inUseRotorHolder = document.querySelectorAll("#rotor-in-use-holder > *");
 const rotorTray = document.querySelectorAll("#rotor-tray > *");
 
+// key input > input wheel > plubboard > right rotor > mid rotor > left rotor > reflector > left rotor > mid rotor > right rotor > input wheel > plubboard > bulb
+const inputWheel = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+
+const rotorOneDefault = {
+    leftMetalContacts: [5, 15, 10, 12, 6, 17, 2, 18, 21, 9, 3, 20, 22, 0, 8, 23, 19, 4, 14, 16, 24, 1, 7, 13, 25, 11], 
+    rightMetalContacts: [11, 23, 5, 19, 13, 22, 1, 12, 21, 16, 18, 4, 14, 9, 25, 0, 3, 8, 17, 6, 10, 24, 2, 7, 20, 15],
+    notch: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'notch', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+};
+
+const rotorTwoDefault = {
+    leftMetalContacts: [3, 16, 1, 2, 20, 13, 12, 22, 17, 0, 15, 23, 9, 6, 18, 8, 24, 4, 5, 10, 7, 19, 25, 21, 14, 11], 
+    rightMetalContacts: [21, 0, 25, 2, 13, 4, 6, 19, 15, 3, 12, 9, 8, 1, 16, 11, 22, 23, 5, 18, 10, 17, 14, 24, 20, 7],
+    notch: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'notch', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+};
+
+const rotorThreeDefault = {
+    leftMetalContacts: [2, 20, 19, 7, 17, 14, 12, 0, 4, 11, 10, 6, 8, 24, 3, 9, 15, 1, 5, 25, 22, 16, 21, 13, 23, 18], 
+    rightMetalContacts: [7, 21, 3, 19, 1, 24, 22, 6, 11, 14, 4, 13, 0, 25, 18, 9, 20, 23, 12, 15, 10, 8, 16, 17, 2, 5],
+    notch: ['-', '-', 'notch', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+};
+
+const rotorFourDefault = {
+    leftMetalContacts: [22, 13, 2, 1, 3, 10, 14, 21, 4, 7, 19, 12, 20, 9, 24, 11, 18, 6, 8, 15, 16, 17, 5, 23, 25, 0], 
+    rightMetalContacts: [15, 9, 21, 1, 25, 13, 10, 2, 22, 14, 0, 16, 24, 20, 6, 12, 3, 7, 4, 18, 8, 11, 23, 5, 17, 19],
+    notch: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'notch', '-', '-', '-', '-', '-']
+};
+
+const rotorFiveDefault = {
+    leftMetalContacts: [18, 10, 21, 15, 8, 20, 22, 3, 24, 13, 1, 23, 0, 6, 14, 16, 17, 7, 9, 11, 5, 25, 2, 12, 19, 4], 
+    rightMetalContacts: [21, 10, 2, 6, 7, 24, 0, 18, 14, 25, 1, 13, 20, 4, 5, 17, 8, 9, 23, 15, 12, 11, 3, 16, 19, 22],
+    notch: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'notch', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+};
+
+const allRotorsDefault = ['0', rotorOneDefault, rotorTwoDefault, rotorThreeDefault, rotorFourDefault, rotorFiveDefault];
+
+const rotorOne = {
+    leftMetalContacts: [5, 15, 10, 12, 6, 17, 2, 18, 21, 9, 3, 20, 22, 0, 8, 23, 19, 4, 14, 16, 24, 1, 7, 13, 25, 11], 
+    rightMetalContacts: [11, 23, 5, 19, 13, 22, 1, 12, 21, 16, 18, 4, 14, 9, 25, 0, 3, 8, 17, 6, 10, 24, 2, 7, 20, 15],
+    notch: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'notch', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+};
+
+const rotorTwo = {
+    leftMetalContacts: [3, 16, 1, 2, 20, 13, 12, 22, 17, 0, 15, 23, 9, 6, 18, 8, 24, 4, 5, 10, 7, 19, 25, 21, 14, 11], 
+    rightMetalContacts: [21, 0, 25, 2, 13, 4, 6, 19, 15, 3, 12, 9, 8, 1, 16, 11, 22, 23, 5, 18, 10, 17, 14, 24, 20, 7],
+    notch: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'notch', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+};
+
+const rotorThree = {
+    leftMetalContacts: [2, 20, 19, 7, 17, 14, 12, 0, 4, 11, 10, 6, 8, 24, 3, 9, 15, 1, 5, 25, 22, 16, 21, 13, 23, 18], 
+    rightMetalContacts: [7, 21, 3, 19, 1, 24, 22, 6, 11, 14, 4, 13, 0, 25, 18, 9, 20, 23, 12, 15, 10, 8, 16, 17, 2, 5],
+    notch: ['-', '-', 'notch', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+};
+
+const rotorFour = {
+    leftMetalContacts: [22, 13, 2, 1, 3, 10, 14, 21, 4, 7, 19, 12, 20, 9, 24, 11, 18, 6, 8, 15, 16, 17, 5, 23, 25, 0], 
+    rightMetalContacts: [15, 9, 21, 1, 25, 13, 10, 2, 22, 14, 0, 16, 24, 20, 6, 12, 3, 7, 4, 18, 8, 11, 23, 5, 17, 19],
+    notch: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'notch', '-', '-', '-', '-', '-']
+};
+
+const rotorFive = {
+    leftMetalContacts: [18, 10, 21, 15, 8, 20, 22, 3, 24, 13, 1, 23, 0, 6, 14, 16, 17, 7, 9, 11, 5, 25, 2, 12, 19, 4], 
+    rightMetalContacts: [21, 10, 2, 6, 7, 24, 0, 18, 14, 25, 1, 13, 20, 4, 5, 17, 8, 9, 23, 15, 12, 11, 3, 16, 19, 22],
+    notch: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'notch', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+};
+
+const allRotors = ['0', rotorOne, rotorTwo, rotorThree, rotorFour, rotorFive];
+
+const reflector = [24, 12, 6, 9, 22, 14, 2, 15, 21, 3, 19, 20, 1, 17, 5, 7, 23, 13, 25, 10, 11, 8, 4, 16, 0, 18];
+
 // TARGET KEY
 function getTargetKey(event) {
     clickedKey = event.target;
@@ -141,6 +210,7 @@ $( function() {
             updateRotorOrder();
             updateRingData();
             updateRotorPosition();
+            updateCircuit();
         }
     });
 } );
@@ -191,11 +261,6 @@ function updateRotorOrder() {
     label_6.textContent = rotorInUseArray[1] == '-' ? '-' : rotorLabelArray[Number(rotorInUseArray[1])];
     label_7.textContent = rotorInUseArray[2] == '-' ? '-' : rotorLabelArray[Number(rotorInUseArray[2])];
     label_8.textContent = rotorInUseArray[3] == '-' ? '-' : rotorLabelArray[Number(rotorInUseArray[3])];
-
-    // assign rotors
-    rotorActiveLeft = rotorInUseArray[1] == '-' ? undefined : Object.assign({}, allRotorsDefault[rotorInUseArray[1]]);
-    rotorActiveMid = rotorInUseArray[2] == '-' ? undefined : Object.assign({}, allRotorsDefault[rotorInUseArray[2]]);
-    rotorActiveRIght = rotorInUseArray[2] == '-' ? undefined : Object.assign({}, allRotorsDefault[rotorInUseArray[3]]);
 
     // update rotor order setting
     document.querySelector('#setting-rotor-detail').textContent = `${rotorInUseArray[1]} ${rotorInUseArray[2]} ${rotorInUseArray[3]}`;
@@ -297,57 +362,84 @@ document.querySelector('#copy-setting').addEventListener('click', () => {
 });
 
 function spinRing(event) {
+    // play ring sound
+    ringSpinSound = new Audio(`sound/ring-spin.mp3`);
+    ringSpinSound.play();
+
     // get rotor when scrolling on rotor
     rotorTargetId = event.target.id;
-    rotorTargetParentId = event.target.parentElement.id;
 
     // get rotor when scrolling on plate
     if (event.target.className.includes('plate')) {
         rotorTargetId = event.target.parentNode.parentNode.id;
-    }
+    };
 
     // Prevent default scrolling
-    event.preventDefault(); 
+    event.preventDefault();
     
-    // Each notch can be considered as an event
-    mouseNotchCount = 0;
-    degreeToRotate = 0;
-
-    mouseNotchCount += Math.sign(event.deltaY); // 1 if scroll down, -1 if scroll up
-    degreeToRotate = mouseNotchCount * 13.846;
-
-    ringSpinSound = new Audio(`sound/ring-spin.mp3`);
-    ringSpinSound.play();
-
-    // Update the rotation for each plate visually
-    plates = document.querySelectorAll(`#${rotorTargetId} .axis .plate`);
-    plates.forEach(plate => {
-        plateCurrentPosition = Number(plate.dataset.platePosition);
-        plateNewPosition = (plateCurrentPosition + mouseNotchCount) % 26 >= 0 ? (plateCurrentPosition + mouseNotchCount) % 26 : 26 + (plateCurrentPosition + mouseNotchCount) % 26;
-        plateNewDeg = plateDegrees[plateNewPosition];
-        plate.dataset.platePosition = String(plateNewPosition);
-        plate.style.transform = `rotateX(${plateNewDeg}) translateZ(10.83vh)`;
-
-        // Update rotor position dataset
-        if (plateNewPosition == 0) {
-            document.querySelector(`#${rotorTargetId}`).dataset.rotorPosition = plate.textContent.match(/\d+/)[0];
-        }
-    });
-
-    // Update ring dataset for rotor
     currentRingSetting = Number(document.querySelector(`#${rotorTargetId}`).dataset.ringSetting);
-    newRingSetting = String(((mouseNotchCount + currentRingSetting) % 26) < 0 ? 26 + ((mouseNotchCount + currentRingSetting) % 26) : ((mouseNotchCount + currentRingSetting) % 26)).padStart(2, '0');
+    newRingSetting = 0;
+    rotor = allRotors[Number(rotorTargetId[rotorTargetId.length - 1])];
+    notchArray = rotor.notch;
+    notchCurrentPosition = notchArray.indexOf('notch');
+    notchNewPosition = 0;
+
+    // if spin up, value increases (scroll down)
+    if (Math.sign(event.deltaY) == 1) {
+        // update plates visually
+        plates = document.querySelectorAll(`#${rotorTargetId} .axis .plate`);
+        plates.forEach(plate => {
+            plateCurrentPosition = Number(plate.dataset.platePosition);
+            plateNewPosition = 0;
+            plateNewPosition = (plateCurrentPosition + 1) % 26;
+            plateNewDeg = plateDegrees[plateNewPosition];
+            plate.dataset.platePosition = String(plateNewPosition);
+            plate.style.transform = `rotateX(${plateNewDeg}) translateZ(10.83vh)`;
+        });
+        // get new ring settting for rotor
+        newRingSetting = String((currentRingSetting - 1 + 26) % 26).padStart(2, '0');
+        // update notch in notch array
+        notchArray.splice(notchCurrentPosition, 1); // remove the notch
+        if (notchCurrentPosition == notchArray.length) {
+            notchArray.splice(0, 0, 'notch');
+        } else {
+            notchArray.splice(notchCurrentPosition + 1, 0, 'notch');
+        }
+    }
+
+    // if spin down, value decreases (scroll up)
+    else if (Math.sign(event.deltaY) == -1) {
+        // update plates visually
+        plates = document.querySelectorAll(`#${rotorTargetId} .axis .plate`);
+        plates.forEach(plate => {
+            plateCurrentPosition = Number(plate.dataset.platePosition);
+            plateNewPosition = 0;
+            plateNewPosition = (plateCurrentPosition - 1 + 26) % 26;
+            plateNewDeg = plateDegrees[plateNewPosition];
+            plate.dataset.platePosition = String(plateNewPosition);
+            plate.style.transform = `rotateX(${plateNewDeg}) translateZ(10.83vh)`;
+        });
+        // get new ring settting for rotor
+        newRingSetting = String((currentRingSetting + 1) % 26).padStart(2, '0');
+        // update notch in notch array
+        notchArray.splice(notchCurrentPosition, 1); // remove the notch
+        if (notchCurrentPosition == 0) {
+            notchArray.splice(25, 0, 'notch');
+        } else {
+            notchArray.splice(notchCurrentPosition - 1, 0, 'notch');
+        }
+    };
+    
+    // update ring dataset for rotor
     document.querySelector(`#${rotorTargetId}`).dataset.ringSetting = newRingSetting;
 
     // Update ring data
     updateRingData();
 };
 
-
 function spinRotor(event) {
     // get rotor when scrolling on rotor
     rotorTargetId = event.target.id;
-    rotorTargetParentId = event.target.parentElement.id;
 
     // get rotor when scrolling on lid frame
     if (rotorTargetId == "lid-frame-1") {
@@ -361,22 +453,20 @@ function spinRotor(event) {
     }
 
     // Prevent default scrolling
-    event.preventDefault(); 
-    
-    // Each notch can be considered as an event
-    mouseNotchCount = 0;
+    event.preventDefault();
 
-    mouseNotchCount += Math.sign(event.deltaY); // 1 if scroll down, -1 if scroll up
-
-    // play sound if spinning rotor
-    rotorSpinSound = new Audio(`sound/rotor-spin.mp3`);
-    rotorSpinSound.play();
-
-    // Update the rotation for each plate visually
     plates = document.querySelectorAll(`#${rotorTargetId} .axis .plate`);
     plates.forEach(plate => {
         plateCurrentPosition = Number(plate.dataset.platePosition);
-        plateNewPosition = (plateCurrentPosition + mouseNotchCount) % 26 >= 0 ? (plateCurrentPosition + mouseNotchCount) % 26 : 26 + (plateCurrentPosition + mouseNotchCount) % 26;
+        plateNewPosition = 0;
+
+        // if spin up, value increases (scroll down)
+        if (Math.sign(event.deltaY) == 1) {
+            plateNewPosition = (plateCurrentPosition + 1) % 26;
+        // if spin down, value decreases (scroll up)
+        } else if (Math.sign(event.deltaY) == -1) {
+            plateNewPosition = (plateCurrentPosition - 1 + 26) % 26;
+        }
         plateNewDeg = plateDegrees[plateNewPosition];
         plate.dataset.platePosition = String(plateNewPosition);
         plate.style.transform = `rotateX(${plateNewDeg}) translateZ(10.83vh)`;
@@ -384,12 +474,64 @@ function spinRotor(event) {
         // Update rotor position dataset
         if (plateNewPosition == 0) {
             document.querySelector(`#${rotorTargetId}`).dataset.rotorPosition = plate.textContent.match(/\d+/)[0];
-        }
+        };
     });
+
+    // play sound for spinning rotor
+    rotorSpinSound = new Audio(`sound/rotor-spin.mp3`);
+    rotorSpinSound.play();
 
     // Update ring data
     updateRotorPosition();
 };
+
+// function spinRotor(event) {
+//     // get rotor when scrolling on rotor
+//     rotorTargetId = event.target.id;
+//     rotorTargetParentId = event.target.parentElement.id;
+
+//     // get rotor when scrolling on lid frame
+//     if (rotorTargetId == "lid-frame-1") {
+//         rotorTargetId = document.querySelector("#rotor-holder-6").firstElementChild.id;
+//     }
+//     else if (rotorTargetId == "lid-frame-2") {
+//         rotorTargetId = document.querySelector("#rotor-holder-7").firstElementChild.id;
+//     }
+//     else if (rotorTargetId == "lid-frame-3") {
+//         rotorTargetId = document.querySelector("#rotor-holder-8").firstElementChild.id;
+//     }
+
+//     // Prevent default scrolling
+//     event.preventDefault(); 
+    
+//     // Each notch can be considered as an event
+//     mouseNotchCount = 0;
+
+//     mouseNotchCount += Math.sign(event.deltaY); // 1 if scroll down, -1 if scroll up
+
+//     // play sound if spinning rotor
+//     rotorSpinSound = new Audio(`sound/rotor-spin.mp3`);
+//     rotorSpinSound.play();
+
+//     // Update the rotation for each plate visually
+//     plates = document.querySelectorAll(`#${rotorTargetId} .axis .plate`);
+//     plates.forEach(plate => {
+//         plateCurrentPosition = Number(plate.dataset.platePosition);
+//         plateNewPosition = (plateCurrentPosition + mouseNotchCount) % 26 >= 0 ? (plateCurrentPosition + mouseNotchCount) % 26 : 26 + (plateCurrentPosition + mouseNotchCount) % 26;
+//         plateNewDeg = plateDegrees[plateNewPosition];
+//         plate.dataset.platePosition = String(plateNewPosition);
+//         plate.style.transform = `rotateX(${plateNewDeg}) translateZ(10.83vh)`;
+
+//         // Update rotor position dataset
+//         if (plateNewPosition == 0) {
+//             document.querySelector(`#${rotorTargetId}`).dataset.rotorPosition = plate.textContent.match(/\d+/)[0];
+//         }
+//     });
+
+//     // Update ring data
+//     updateRotorPosition();
+//     updateCircuit();
+// };
 
 function spinRingOneNotch(event) {
     // only execute when the lid is open
@@ -455,6 +597,7 @@ function spinRingOneNotch(event) {
 
         // Update ring data
         updateRingData();
+        updateCircuit();
     }
 }
 
@@ -517,6 +660,7 @@ function spinRotorOneNotch(event) {
 
         // Update rotor data
         updateRotorPosition();
+        updateCircuit();
     }
 }
 
@@ -560,6 +704,7 @@ function toggleLid() {
     }
 
     updateRotorPosition();
+    updateCircuit();
 }
 
 switchButton.addEventListener("click", toggleLid);
@@ -593,42 +738,12 @@ document.querySelectorAll(".plughole").forEach((plughole) => {
     });
 })
 
+//
+function updateCircuit() {
+    // console.log('rotorActiveLeft', rotorActiveLeft);
+    // console.log('rotorActiveMid', rotorActiveMid);
+    // console.log('rotorActiveRight', rotorActiveRight);
+    // check if circuit is complete, with 3 rotors active and lid closed
+}
 
-// key input > plubboard > first rotor > second rotor > third rotor > reflector > third rotor > second rotor > first rotor > plubboard > bulb
-const inputWheel = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
-const rotorOneDefault = {
-    left: [5, 15, 10, 12, 6, 17, 2, 18, 21, 9, 3, 20, 22, 0, 8, 23, 19, 4, 14, 16, 24, 1, 7, 13, 25, 11], 
-    right: [11, 23, 5, 19, 13, 22, 1, 12, 21, 16, 18, 4, 14, 9, 25, 0, 3, 8, 17, 6, 10, 24, 2, 7, 20, 15],
-    notch: 10
-};
-
-const rotorTwoDefault = {
-    left: [3, 16, 1, 2, 20, 13, 12, 22, 17, 0, 15, 23, 9, 6, 18, 8, 24, 4, 5, 10, 7, 19, 25, 21, 14, 11], 
-    right: [21, 0, 25, 2, 13, 4, 6, 19, 15, 3, 12, 9, 8, 1, 16, 11, 22, 23, 5, 18, 10, 17, 14, 24, 20, 7],
-    notch: 14
-};
-
-const rotorThreeDefault = {
-    left: [2, 20, 19, 7, 17, 14, 12, 0, 4, 11, 10, 6, 8, 24, 3, 9, 15, 1, 5, 25, 22, 16, 21, 13, 23, 18], 
-    right: [7, 21, 3, 19, 1, 24, 22, 6, 11, 14, 4, 13, 0, 25, 18, 9, 20, 23, 12, 15, 10, 8, 16, 17, 2, 5],
-    notch: 2
-};
-
-const rotorFourDefault = {
-    left: [22, 13, 2, 1, 3, 10, 14, 21, 4, 7, 19, 12, 20, 9, 24, 11, 18, 6, 8, 15, 16, 17, 5, 23, 25, 0], 
-    right: [15, 9, 21, 1, 25, 13, 10, 2, 22, 14, 0, 16, 24, 20, 6, 12, 3, 7, 4, 18, 8, 11, 23, 5, 17, 19],
-    notch: 20
-};
-
-const rotorFiveDefault = {
-    left: [18, 10, 21, 15, 8, 20, 22, 3, 24, 13, 1, 23, 0, 6, 14, 16, 17, 7, 9, 11, 5, 25, 2, 12, 19, 4], 
-    right: [21, 10, 2, 6, 7, 24, 0, 18, 14, 25, 1, 13, 20, 4, 5, 17, 8, 9, 23, 15, 12, 11, 3, 16, 19, 22],
-    notch: 16
-};
-
-const allRotorsDefault = ['0', rotorOneDefault, rotorTwoDefault, rotorThreeDefault, rotorFourDefault, rotorFiveDefault];
-
-const reflector = [24, 12, 6, 9, 22, 14, 2, 15, 21, 3, 19, 20, 1, 17, 5, 7, 23, 13, 25, 10, 11, 8, 4, 16, 0, 18];
-
-let plugboard = {"H" : "N", "L": "S"};
