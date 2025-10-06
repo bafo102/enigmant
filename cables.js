@@ -81,7 +81,6 @@ class Cable {
     element.style.top = "0";
     element.style.left = "0";
     element.style.pointerEvents = "none";
-    // console.log(event.target);
     return element;
   }
 
@@ -150,15 +149,11 @@ class Cable {
 
     document.addEventListener("mousemove", (e) => this.drag(e));
     document.addEventListener("mouseup", (e) => this.stopDragging(e));
-    
-    // update plughole pairings
-    // document.addEventListener("mouseup", () => updatePlugboardConnections());
   }
 
   createDragHandle() {
     const handle = document.createElement("div");
     handle.classList.add("cable-drag-handle");
-    // handleOne.id = 'cable-drag-handle-one';
     handle.style.width = `${this.config.dragHandleSize}px`;
     handle.style.height = `${this.config.dragHandleSize}px`;
     handle.style.position = "absolute";
@@ -225,7 +220,6 @@ class Cable {
     this.update();
 
     updatePlugboardConnections();
-    // console.log(this);
   }
 
   findSnapTarget(x, y) {

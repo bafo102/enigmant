@@ -17,9 +17,11 @@ spinRotorOneNotch
 - if click on button whie lid is closed								V
 
 PLUGBOARD
-- assign pairings
+- assign pairings										V
 
 style caret
+
+Fix self plugging										V
 
 
 
@@ -67,3 +69,4 @@ style caret
     // notchPosition = allRotors[Number(rotorTargetId[rotorTargetId.length - 1])].notch.indexOf('notch');
     
     // console.log('notch ', notchPosition);
+
