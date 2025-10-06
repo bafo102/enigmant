@@ -227,25 +227,6 @@ class Cable {
 
     let closestElement = null;
     
-    /* ORIGINAL CODES
-    let closestDistance = Infinity;
-
-    for (let element of potentialTargets) {
-      const rect = element.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
-
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestElement = element;
-      }
-    }
-
-    // Only return the closest element if it's within the snap radius
-    return closestDistance <= this.config.snapRadius ? closestElement : null;
-    */
-    
     for (let element of potentialTargets) {
         const rect = element.getBoundingClientRect();
     

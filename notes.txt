@@ -70,3 +70,8 @@ Fix self plugging										V
     
     // console.log('notch ', notchPosition);
 
+
+5 4 3 - 01 25 01 - 01 01 03 - QW ER TZ
+
+5 4 3 - 01 25 01 - 01 02 05 - QW ER TZ => test L dup
+

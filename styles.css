@@ -157,6 +157,18 @@ button {
       0 0 151px #fffb14;
 }
 
+.lit {
+    color: #fffb14;
+    text-shadow:
+      0 0 2px #fff,
+      0 0 15px #fff,
+      0 0 30px #fffb14,
+      0 0 40px #fffb14,
+      0 0 60px #fffb14,
+      0 0 80px #fffb14,
+      0 0 100px #fffb14;
+}
+
 #rotor-tray {
     display: flex;
     justify-content: center;
@@ -474,7 +486,7 @@ button {
     background-color: #4B4B4B   ;
     width: 50vw;
     height: 100vh;
-    user-select: none;
+    /* user-select: none; */
 }
 
 /* MESSAGE */

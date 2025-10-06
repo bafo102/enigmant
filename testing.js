@@ -1,76 +1,70 @@
-const canvas = document.getElementById('canvas');
-const context = canvas.getContext('2d');
+const inputWheel = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
-// Define rope properties
-const ropeLength = 300; // Total length of the rope
-const numPoints = 10; // Number of points in the rope
-const points = [];
-const fixedPoint = { x: 100, y: 100 }; // Fixed point at the top
 
-// Initialize rope points
-for (let i = 0; i < numPoints; i++) {
-    points.push({
-        x: fixedPoint.x + (ropeLength / (numPoints - 1)) * i,
-        y: fixedPoint.y + (i * 20), // Spacing vertically
-        oldY: fixedPoint.y + (i * 20), // Previous Y position
-        mass: 1.0
-    });
-}
 
-function updateRope() {
-    // Update positions based on simple gravity
-    for (let i = 1; i < points.length; i++) {
-        const point = points[i];
-        const gravity = 0.5; // Simple gravity effect
+const rotorThreeTest = {
+    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03-notch', '02'],
+    leftMetalContacts: [2, 20, 19, 7, 17, 14, 12, 0, 4, 11, 10, 6, 8, 24, 3, 9, 15, 1, 5, 25, 22, 16, 21, 13, 23, 18], 
+    rightMetalContacts: [7, 21, 3, 19, 1, 24, 22, 6, 11, 14, 4, 13, 0, 25, 18, 9, 20, 23, 12, 15, 10, 8, 16, 17, 2, 5]
+};
 
-        // Velocity and position update
-        const velocityY = point.y - point.oldY;
-        point.oldY = point.y;
-        point.y += velocityY + gravity;
+const rotorOneDefault = {
+    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11-notch', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
+    leftMetalContacts: [5, 15, 10, 12, 6, 17, 2, 18, 21, 9, 3, 20, 22, 0, 8, 23, 19, 4, 14, 16, 24, 1, 7, 13, 25, 11], 
+    rightMetalContacts: [11, 23, 5, 19, 13, 22, 1, 12, 21, 16, 18, 4, 14, 9, 25, 0, 3, 8, 17, 6, 10, 24, 2, 7, 20, 15]
+};
 
-        // Constrain distance to previous point
-        const prevPoint = points[i - 1];
-        const dx = point.x - prevPoint.x;
-        const dy = point.y - prevPoint.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const desiredLength = 20; // Desired distance between points
+const rotorTwoDefault = {
+    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15-notch', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
+    leftMetalContacts: [3, 16, 1, 2, 20, 13, 12, 22, 17, 0, 15, 23, 9, 6, 18, 8, 24, 4, 5, 10, 7, 19, 25, 21, 14, 11], 
+    rightMetalContacts: [21, 0, 25, 2, 13, 4, 6, 19, 15, 3, 12, 9, 8, 1, 16, 11, 22, 23, 5, 18, 10, 17, 14, 24, 20, 7]
+};
 
-        if (distance > desiredLength) {
-            const diff = distance - desiredLength;
-            const normalX = dx / distance;
-            const normalY = dy / distance;
 
-            // Pull points closer
-            point.x -= normalX * diff * 0.5;
-            point.y -= normalY * diff * 0.5;
-        }
-    }
-}
 
-function drawRope() {
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    context.beginPath();
-    context.moveTo(fixedPoint.x, fixedPoint.y);
-    for (const point of points) {
-        context.lineTo(point.x, point.y);
-    }
-    context.strokeStyle = 'black';
-    context.lineWidth = 2;
-    context.stroke();
+const reflector = [24, 12, 6, 9, 22, 14, 2, 15, 21, 3, 19, 20, 1, 17, 5, 7, 23, 13, 25, 10, 11, 8, 4, 16, 0, 18];
 
-    // Draw points
-    for (const point of points) {
-        context.beginPath();
-        context.arc(point.x, point.y, 5, 0, Math.PI * 2);
-        context.fillStyle = 'blue';
-        context.fill();
-    }
-}
+const rotorFiveDefault = {
+    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17-notch', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
+    leftMetalContacts: [18, 10, 21, 15, 8, 20, 22, 3, 24, 13, 1, 23, 0, 6, 14, 16, 17, 7, 9, 11, 5, 25, 2, 12, 19, 4], 
+    rightMetalContacts: [21, 10, 2, 6, 7, 24, 0, 18, 14, 25, 1, 13, 20, 4, 5, 17, 8, 9, 23, 15, 12, 11, 3, 16, 19, 22]
+};
 
-function tick() {
-    updateRope();
-    drawRope();
-    requestAnimationFrame(tick);
-}
+const rotorFourDefault = {
+    plates: ['01', '26', '25', '24', '23', '22', '21-notch', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
+    leftMetalContacts: [22, 13, 2, 1, 3, 10, 14, 21, 4, 7, 19, 12, 20, 9, 24, 11, 18, 6, 8, 15, 16, 17, 5, 23, 25, 0], 
+    rightMetalContacts: [15, 9, 21, 1, 25, 13, 10, 2, 22, 14, 0, 16, 24, 20, 6, 12, 3, 7, 4, 18, 8, 11, 23, 5, 17, 19]
+};
 
-tick();
+const rotorThreeDefault = {
+    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03-notch', '02'],
+    leftMetalContacts: [2, 20, 19, 7, 17, 14, 12, 0, 4, 11, 10, 6, 8, 24, 3, 9, 15, 1, 5, 25, 22, 16, 21, 13, 23, 18], 
+    rightMetalContacts: [7, 21, 3, 19, 1, 24, 22, 6, 11, 14, 4, 13, 0, 25, 18, 9, 20, 23, 12, 15, 10, 8, 16, 17, 2, 5]
+};
+
+// key pressed:  Q
+// script.js:733 key after plugboard first trip:  Q
+// script.js:737 inputWheelContactFirstIndex:  16
+
+// script.js:742 rightContactRightRotorFirstValue:  20
+// script.js:743 leftContactRightRotorFirstIndex:  1
+
+// script.js:748 rightContactMidRotorFirstValue:  9
+// script.js:749 leftContactMidRotorFirstIndex:  13
+
+// script.js:754 rightContactLeftRotorFirstValue:  4
+// script.js:755 leftContactLeftRotorFirstIndex:  25
+
+// script.js:759 reflectorContactOutcome:  18
+
+// script.js:764 leftContactLeftRotorSecondValue:  9
+// script.js:765 rightContactLeftRotorSecondIndex:  17
+
+// script.js:770 leftContactMidRotorSecondValue:  6
+// script.js:771 rightContactMidRotorSecondIndex:  14
+
+// script.js:776 leftContactRightRotorSecondValue:  3
+// script.js:777 rightContactRightRotorSecondIndex:  16
+
+// script.js:781 key value going in the inputWheel:  Q
+// script.js:786 key after plugboard second trip:  Q

@@ -4,9 +4,6 @@ let ringSettingArray = ['0', '--', '--', '--'];
 let rotorPositionArray = ['0', '--', '--', '--'];
 let rotorLabelArray = ['0', 'I', 'II', 'III', 'IV', 'V'];
 let plugboardConnectionArray = [];
-let rotorActiveLeft;
-let rotorActiveMid;
-let rotorActiveRight;
 const plateDegrees = [
     "0deg",
     "13.846deg",
@@ -54,79 +51,68 @@ const carets = document.querySelectorAll(".caret");
 const inUseRotorHolder = document.querySelectorAll("#rotor-in-use-holder > *");
 const rotorTray = document.querySelectorAll("#rotor-tray > *");
 
-// key input > input wheel > plubboard > right rotor > mid rotor > left rotor > reflector > left rotor > mid rotor > right rotor > input wheel > plubboard > bulb
 const inputWheel = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
 const rotorOneDefault = {
-    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
+    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11-notch', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
     leftMetalContacts: [5, 15, 10, 12, 6, 17, 2, 18, 21, 9, 3, 20, 22, 0, 8, 23, 19, 4, 14, 16, 24, 1, 7, 13, 25, 11], 
-    rightMetalContacts: [11, 23, 5, 19, 13, 22, 1, 12, 21, 16, 18, 4, 14, 9, 25, 0, 3, 8, 17, 6, 10, 24, 2, 7, 20, 15],
-    notch: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'notch', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+    rightMetalContacts: [11, 23, 5, 19, 13, 22, 1, 12, 21, 16, 18, 4, 14, 9, 25, 0, 3, 8, 17, 6, 10, 24, 2, 7, 20, 15]
 };
 
 const rotorTwoDefault = {
-    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
+    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15-notch', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
     leftMetalContacts: [3, 16, 1, 2, 20, 13, 12, 22, 17, 0, 15, 23, 9, 6, 18, 8, 24, 4, 5, 10, 7, 19, 25, 21, 14, 11], 
-    rightMetalContacts: [21, 0, 25, 2, 13, 4, 6, 19, 15, 3, 12, 9, 8, 1, 16, 11, 22, 23, 5, 18, 10, 17, 14, 24, 20, 7],
-    notch: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'notch', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+    rightMetalContacts: [21, 0, 25, 2, 13, 4, 6, 19, 15, 3, 12, 9, 8, 1, 16, 11, 22, 23, 5, 18, 10, 17, 14, 24, 20, 7]
 };
 
 const rotorThreeDefault = {
-    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
+    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03-notch', '02'],
     leftMetalContacts: [2, 20, 19, 7, 17, 14, 12, 0, 4, 11, 10, 6, 8, 24, 3, 9, 15, 1, 5, 25, 22, 16, 21, 13, 23, 18], 
-    rightMetalContacts: [7, 21, 3, 19, 1, 24, 22, 6, 11, 14, 4, 13, 0, 25, 18, 9, 20, 23, 12, 15, 10, 8, 16, 17, 2, 5],
-    notch: ['-', '-', 'notch', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+    rightMetalContacts: [7, 21, 3, 19, 1, 24, 22, 6, 11, 14, 4, 13, 0, 25, 18, 9, 20, 23, 12, 15, 10, 8, 16, 17, 2, 5]
 };
 
 const rotorFourDefault = {
-    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
+    plates: ['01', '26', '25', '24', '23', '22', '21-notch', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
     leftMetalContacts: [22, 13, 2, 1, 3, 10, 14, 21, 4, 7, 19, 12, 20, 9, 24, 11, 18, 6, 8, 15, 16, 17, 5, 23, 25, 0], 
-    rightMetalContacts: [15, 9, 21, 1, 25, 13, 10, 2, 22, 14, 0, 16, 24, 20, 6, 12, 3, 7, 4, 18, 8, 11, 23, 5, 17, 19],
-    notch: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'notch', '-', '-', '-', '-', '-']
+    rightMetalContacts: [15, 9, 21, 1, 25, 13, 10, 2, 22, 14, 0, 16, 24, 20, 6, 12, 3, 7, 4, 18, 8, 11, 23, 5, 17, 19]
 };
 
 const rotorFiveDefault = {
-    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
+    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17-notch', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
     leftMetalContacts: [18, 10, 21, 15, 8, 20, 22, 3, 24, 13, 1, 23, 0, 6, 14, 16, 17, 7, 9, 11, 5, 25, 2, 12, 19, 4], 
-    rightMetalContacts: [21, 10, 2, 6, 7, 24, 0, 18, 14, 25, 1, 13, 20, 4, 5, 17, 8, 9, 23, 15, 12, 11, 3, 16, 19, 22],
-    notch: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'notch', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+    rightMetalContacts: [21, 10, 2, 6, 7, 24, 0, 18, 14, 25, 1, 13, 20, 4, 5, 17, 8, 9, 23, 15, 12, 11, 3, 16, 19, 22]
 };
 
 const allRotorsDefault = ['0', rotorOneDefault, rotorTwoDefault, rotorThreeDefault, rotorFourDefault, rotorFiveDefault];
 
 let rotorOne = {
-    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
+    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11-notch', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
     leftMetalContacts: [5, 15, 10, 12, 6, 17, 2, 18, 21, 9, 3, 20, 22, 0, 8, 23, 19, 4, 14, 16, 24, 1, 7, 13, 25, 11], 
-    rightMetalContacts: [11, 23, 5, 19, 13, 22, 1, 12, 21, 16, 18, 4, 14, 9, 25, 0, 3, 8, 17, 6, 10, 24, 2, 7, 20, 15],
-    notch: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'notch', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+    rightMetalContacts: [11, 23, 5, 19, 13, 22, 1, 12, 21, 16, 18, 4, 14, 9, 25, 0, 3, 8, 17, 6, 10, 24, 2, 7, 20, 15]
 };
 
 let rotorTwo = {
-    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
+    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15-notch', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
     leftMetalContacts: [3, 16, 1, 2, 20, 13, 12, 22, 17, 0, 15, 23, 9, 6, 18, 8, 24, 4, 5, 10, 7, 19, 25, 21, 14, 11], 
-    rightMetalContacts: [21, 0, 25, 2, 13, 4, 6, 19, 15, 3, 12, 9, 8, 1, 16, 11, 22, 23, 5, 18, 10, 17, 14, 24, 20, 7],
-    notch: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'notch', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+    rightMetalContacts: [21, 0, 25, 2, 13, 4, 6, 19, 15, 3, 12, 9, 8, 1, 16, 11, 22, 23, 5, 18, 10, 17, 14, 24, 20, 7]
 };
 
 let rotorThree = {
-    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
+    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03-notch', '02'],
     leftMetalContacts: [2, 20, 19, 7, 17, 14, 12, 0, 4, 11, 10, 6, 8, 24, 3, 9, 15, 1, 5, 25, 22, 16, 21, 13, 23, 18], 
-    rightMetalContacts: [7, 21, 3, 19, 1, 24, 22, 6, 11, 14, 4, 13, 0, 25, 18, 9, 20, 23, 12, 15, 10, 8, 16, 17, 2, 5],
-    notch: ['-', '-', 'notch', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+    rightMetalContacts: [7, 21, 3, 19, 1, 24, 22, 6, 11, 14, 4, 13, 0, 25, 18, 9, 20, 23, 12, 15, 10, 8, 16, 17, 2, 5]
 };
 
 let rotorFour = {
-    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
+    plates: ['01', '26', '25', '24', '23', '22', '21-notch', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
     leftMetalContacts: [22, 13, 2, 1, 3, 10, 14, 21, 4, 7, 19, 12, 20, 9, 24, 11, 18, 6, 8, 15, 16, 17, 5, 23, 25, 0], 
-    rightMetalContacts: [15, 9, 21, 1, 25, 13, 10, 2, 22, 14, 0, 16, 24, 20, 6, 12, 3, 7, 4, 18, 8, 11, 23, 5, 17, 19],
-    notch: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'notch', '-', '-', '-', '-', '-']
+    rightMetalContacts: [15, 9, 21, 1, 25, 13, 10, 2, 22, 14, 0, 16, 24, 20, 6, 12, 3, 7, 4, 18, 8, 11, 23, 5, 17, 19]
 };
 
 let rotorFive = {
-    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
+    plates: ['01', '26', '25', '24', '23', '22', '21', '20', '19', '18', '17-notch', '16', '15', '14', '13', '12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02'],
     leftMetalContacts: [18, 10, 21, 15, 8, 20, 22, 3, 24, 13, 1, 23, 0, 6, 14, 16, 17, 7, 9, 11, 5, 25, 2, 12, 19, 4], 
-    rightMetalContacts: [21, 10, 2, 6, 7, 24, 0, 18, 14, 25, 1, 13, 20, 4, 5, 17, 8, 9, 23, 15, 12, 11, 3, 16, 19, 22],
-    notch: ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', 'notch', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+    rightMetalContacts: [21, 10, 2, 6, 7, 24, 0, 18, 14, 25, 1, 13, 20, 4, 5, 17, 8, 9, 23, 15, 12, 11, 3, 16, 19, 22]
 };
 
 const allRotors = ['0', rotorOne, rotorTwo, rotorThree, rotorFour, rotorFive];
@@ -135,10 +121,8 @@ const reflector = [24, 12, 6, 9, 22, 14, 2, 15, 21, 3, 19, 20, 1, 17, 5, 7, 23, 
 
 // TARGET KEY
 function getTargetKey(event) {
-    clickedKey = event.target;
-    // console.log('clickedKey: ',clickedKey);
-    targetKey = clickedKey.id[clickedKey.id.length - 1];
-    // console.log(targetKey);
+    targetKey = event.target.id[event.target.id.length - 1];
+    return targetKey;
 }
 
 keys.forEach(key => {key.addEventListener("mousedown", getTargetKey)});
@@ -147,7 +131,6 @@ keys.forEach(key => {key.addEventListener("mousedown", getTargetKey)});
 function playSound() {
     pressSound = new Audio(`sound/press-${targetKey}.mp3`);
     pressSound.play();
-    // console.log('audio played')
 }
 
 keys.forEach(key => {key.addEventListener("mousedown", playSound)});
@@ -225,7 +208,6 @@ $( function() {
             updateRotorOrder();
             updateRingData();
             updateRotorPosition();
-            updateCircuit();
         }
     });
 } );
@@ -388,6 +370,14 @@ function shiftOneNotch(shiftDirection, array) {
     }
 };
 
+function showRotors() {
+    document.querySelector('#toShowRotorOne').innerHTML = `${rotorOne.plates}`+'<br>'+`${rotorOne.leftMetalContacts}`+'<br>'+`${rotorOne.rightMetalContacts}`+'<br>';
+    document.querySelector('#toShowRotorTwo').innerHTML = `${rotorTwo.plates}`+'<br>'+`${rotorTwo.leftMetalContacts}`+'<br>'+`${rotorTwo.rightMetalContacts}`+'<br>';
+    document.querySelector('#toShowRotorThree').innerHTML = `${rotorThree.plates}`+'<br>'+`${rotorThree.leftMetalContacts}`+'<br>'+`${rotorThree.rightMetalContacts}`+'<br>';
+    document.querySelector('#toShowRotorFour').innerHTML = `${rotorFour.plates}`+'<br>'+`${rotorFour.leftMetalContacts}`+'<br>'+`${rotorFour.rightMetalContacts}`+'<br>';
+    document.querySelector('#toShowRotorFive').innerHTML = `${rotorFive.plates}`+'<br>'+`${rotorFive.leftMetalContacts}`+'<br>'+`${rotorFive.rightMetalContacts}`+'<br>';
+}
+
 function spinRing(event) {
     if (lid.className == "lid-open") {
         // play ring sound
@@ -438,7 +428,6 @@ function spinRing(event) {
         newRingSetting = 0;
         rotor = allRotors[Number(rotorTargetId[rotorTargetId.length - 1])];
         plateArray = rotor.plates;
-        notchArray = rotor.notch;
 
         // if spin up, value increases (scroll down)
         if (Math.sign(event.deltaY) == 1 || spinDirection == 'up') {
@@ -459,9 +448,8 @@ function spinRing(event) {
             });
             // get new ring settting for rotor
             newRingSetting = String((currentRingSetting - 1 + 26) % 26).padStart(2, '0');
-            // update plate and notch in notch array
+            // update plate in array
             shiftOneNotch('up', plateArray);
-            shiftOneNotch('up', notchArray);
         }
 
         // if spin down, value decreases (scroll up)
@@ -483,20 +471,15 @@ function spinRing(event) {
             });
             // get new ring settting for rotor
             newRingSetting = String((currentRingSetting + 1) % 26).padStart(2, '0');
-            // update plate and notch in notch array
+            // update plate in array
             shiftOneNotch('down', plateArray);
-            shiftOneNotch('down', notchArray);
         };
         
         // update ring dataset for rotor
         document.querySelector(`#${rotorTargetId}`).dataset.ringSetting = newRingSetting;
 
         // show rotor info
-        document.querySelector('#toShowRotorOne').innerHTML = `${rotorOne.plates}`+'<br>'+`${rotorOne.leftMetalContacts}`+'<br>'+`${rotorOne.rightMetalContacts}`+'<br>'+`${rotorOne.notch}`;
-        document.querySelector('#toShowRotorTwo').innerHTML = `${rotorTwo.plates}`+'<br>'+`${rotorTwo.leftMetalContacts}`+'<br>'+`${rotorTwo.rightMetalContacts}`+'<br>'+`${rotorTwo.notch}`;
-        document.querySelector('#toShowRotorThree').innerHTML = `${rotorThree.plates}`+'<br>'+`${rotorThree.leftMetalContacts}`+'<br>'+`${rotorThree.rightMetalContacts}`+'<br>'+`${rotorThree.notch}`;
-        document.querySelector('#toShowRotorFour').innerHTML = `${rotorFour.plates}`+'<br>'+`${rotorFour.leftMetalContacts}`+'<br>'+`${rotorFour.rightMetalContacts}`+'<br>'+`${rotorFour.notch}`;
-        document.querySelector('#toShowRotorFive').innerHTML = `${rotorFive.plates}`+'<br>'+`${rotorFive.leftMetalContacts}`+'<br>'+`${rotorFive.rightMetalContacts}`+'<br>'+`${rotorFive.notch}`;
+        showRotors();
 
         // Update ring data
         updateRingData();
@@ -505,7 +488,7 @@ function spinRing(event) {
     
 };
 
-function spinRotor(event) {
+function spinRotor(event, rotorWhenPressingKey) {
     if (lid.className == "lid-closed") {
         // play rotor sound
         rotorSpinSound = new Audio(`sound/rotor-spin.mp3`);
@@ -541,18 +524,18 @@ function spinRotor(event) {
             rotorTargetId = document.querySelector("#rotor-holder-8").firstElementChild.id;
             spinDirection = 'up';
         }
-        else if (rotorTargetParentId == "spin-down-button-1" || rotorTargetId == "spin-down-button-1") {
+        else if (rotorTargetParentId == "spin-down-button-1" || rotorTargetId == "spin-down-button-1" || rotorWhenPressingKey == 'left') {
             rotorTargetId = document.querySelector("#rotor-holder-6").firstElementChild.id;
             spinDirection = 'down';
         }
-        else if (rotorTargetParentId == "spin-down-button-2" || rotorTargetId == "spin-down-button-2") {
+        else if (rotorTargetParentId == "spin-down-button-2" || rotorTargetId == "spin-down-button-2" || rotorWhenPressingKey == 'mid') {
             rotorTargetId = document.querySelector("#rotor-holder-7").firstElementChild.id;
             spinDirection = 'down';
         }
-        else if (rotorTargetParentId == "spin-down-button-3" || rotorTargetId == "spin-down-button-3") {
+        else if (rotorTargetParentId == "spin-down-button-3" || rotorTargetId == "spin-down-button-3" || rotorWhenPressingKey == 'right') {
             rotorTargetId = document.querySelector("#rotor-holder-8").firstElementChild.id;
             spinDirection = 'down';
-        }
+        }        
 
         // Prevent default scrolling
         event.preventDefault();
@@ -560,10 +543,7 @@ function spinRotor(event) {
         currentRingSetting = Number(document.querySelector(`#${rotorTargetId}`).dataset.ringSetting);
         newRingSetting = 0;
         rotor = allRotors[Number(rotorTargetId[rotorTargetId.length - 1])];
-        leftMetalContactArray = rotor.leftMetalContacts;
-        rightMetalContactArray = rotor.rightMetalContacts;
         plateArray = rotor.plates;
-        notchArray = rotor.notch;
 
         // if spin up, value increases (scroll down)
         if (Math.sign(event.deltaY) == 1 || spinDirection == 'up') {
@@ -584,11 +564,10 @@ function spinRotor(event) {
             });
             // get new ring settting for rotor
             newRingSetting = String((currentRingSetting - 1 + 26) % 26).padStart(2, '0');
-            // update metal contacts and notch in array
+            // update metal contacts in array
             shiftOneNotch('up', plateArray);
-            shiftOneNotch('up', leftMetalContactArray);
-            shiftOneNotch('up', rightMetalContactArray);
-            shiftOneNotch('up', notchArray);
+            shiftOneNotch('up', rotor.leftMetalContacts);
+            shiftOneNotch('up', rotor.rightMetalContacts);
         }
 
         // if spin down, value decreases (scroll up)
@@ -610,20 +589,17 @@ function spinRotor(event) {
             });
             // get new ring settting for rotor
             newRingSetting = String((currentRingSetting + 1) % 26).padStart(2, '0');
-            // update metal contacts and notch in array
+            // update metal contacts in array
             shiftOneNotch('down', plateArray);
-            shiftOneNotch('down', leftMetalContactArray);
-            shiftOneNotch('down', rightMetalContactArray);
-            shiftOneNotch('down', notchArray);
+            shiftOneNotch('down', rotor.leftMetalContacts);
+            shiftOneNotch('down', rotor.rightMetalContacts);
 
         };
+
         // show rotor info
-        document.querySelector('#toShowRotorOne').innerHTML = `${rotorOne.plates}`+'<br>'+`${rotorOne.leftMetalContacts}`+'<br>'+`${rotorOne.rightMetalContacts}`+'<br>'+`${rotorOne.notch}`;
-        document.querySelector('#toShowRotorTwo').innerHTML = `${rotorTwo.plates}`+'<br>'+`${rotorTwo.leftMetalContacts}`+'<br>'+`${rotorTwo.rightMetalContacts}`+'<br>'+`${rotorTwo.notch}`;
-        document.querySelector('#toShowRotorThree').innerHTML = `${rotorThree.plates}`+'<br>'+`${rotorThree.leftMetalContacts}`+'<br>'+`${rotorThree.rightMetalContacts}`+'<br>'+`${rotorThree.notch}`;
-        document.querySelector('#toShowRotorFour').innerHTML = `${rotorFour.plates}`+'<br>'+`${rotorFour.leftMetalContacts}`+'<br>'+`${rotorFour.rightMetalContacts}`+'<br>'+`${rotorFour.notch}`;
-        document.querySelector('#toShowRotorFive').innerHTML = `${rotorFive.plates}`+'<br>'+`${rotorFive.leftMetalContacts}`+'<br>'+`${rotorFive.rightMetalContacts}`+'<br>'+`${rotorFive.notch}`;
-        // Update ring data
+        showRotors();
+
+        // update rotor position data
         updateRotorPosition();
     };
 };
@@ -668,7 +644,6 @@ function toggleLid() {
     }
 
     updateRotorPosition();
-    updateCircuit();
 }
 
 switchButton.addEventListener("click", toggleLid);
@@ -697,18 +672,123 @@ cableConfig = {
 // add eventlistent to all plugholes
 document.querySelectorAll(".plughole").forEach((plughole) => {
     plughole.addEventListener("click", () => {
-        patchbay.startCable(plughole, cableConfig);
-        plughole.className = 'plughole plugged';
-        patchbay.start(); // keep this to animate the cable
+        // check if the plughole is avalable
+        if (!plughole.classList.contains('plugged')) {
+            patchbay.startCable(plughole, cableConfig);
+            plughole.className = 'plughole plugged';
+            patchbay.start(); // keep this to animate the cable
+        }
     });
-})
+});
 
-//
-function updateCircuit() {
-    // console.log('rotorActiveLeft', rotorActiveLeft);
-    // console.log('rotorActiveMid', rotorActiveMid);
-    // console.log('rotorActiveRight', rotorActiveRight);
-    // check if circuit is complete, with 3 rotors active and lid closed
+
+keys.forEach(key => {key.addEventListener("mousedown", produceEncryptedKey)});
+keys.forEach(key => {key.addEventListener("mouseup", () => {
+    allLamps = document.querySelectorAll(".lamp").forEach(lamp => {
+        lamp.classList.remove('lit');
+    });
+})});
+
+function lightUpLamp(key) {
+    // add class 'lit' to lamp
+    lamp = document.querySelector(`#lamp-${key}`);
+    lamp.classList.add('lit');
 }
 
+// key input > plugboard > input wheel > right rotor > mid rotor > left rotor > reflector > left rotor > mid rotor > right rotor > input wheel > plubboard > bulb
+function produceEncryptedKey(event) {
+    // check if circuit is complete, with 3 rotors active and lid closed
+    if (rotorInUseArray[1] != '-' && rotorInUseArray[2] != '-' && rotorInUseArray[3] != '-' && lid.className == "lid-closed") {
+        // get rotors (changes to these rotors will be reflected in the assigned rotors)
+        rightRotor = allRotors[Number(rotorInUseArray[3])];
+        midRotor = allRotors[Number(rotorInUseArray[2])];
+        leftRotor = allRotors[Number(rotorInUseArray[1])];
+        activeRotors = [0, leftRotor,  midRotor, rightRotor];
 
+        // // check notch to spin next rotors
+        if (rightRotor.plates[0].includes('notch') && midRotor.plates[0].includes('notch')) {
+            spinRotor(event, 'right');
+            spinRotor(event, 'mid');
+            spinRotor(event, 'left');
+        } else if (rightRotor.plates[0].includes('notch')) {
+            spinRotor(event, 'right');
+            spinRotor(event, 'mid');
+        } else {
+            spinRotor(event, 'right');
+        }
+
+        // update rotor position
+        updateRotorPosition();
+
+        // show rotors
+        showRotors();
+
+        // get key pressed
+        let key = getTargetKey(event);
+        console.log('key pressed: ', key);
+
+        // change key via plugboard first trip
+        firstMatchKeys = plugboardConnectionArray.filter(pair => pair.includes(key)).map(pair => pair.replace(key, '')); // if key is present, find the other key
+        if (firstMatchKeys.length > 0) {key = firstMatchKeys[0];} // assign the other key to key
+        console.log('key after plugboard first trip: ', key);
+
+        // key index via inputWheel
+        inputWheelContactFirstIndex = inputWheel.indexOf(key)
+        console.log('inputWheelContactFirstIndex: ', inputWheelContactFirstIndex);
+
+         // change key via right rotor - first trip
+        rightContactRightRotorFirstValue = rightRotor.rightMetalContacts[inputWheelContactFirstIndex];
+        leftContactRightRotorFirstIndex = rightRotor.leftMetalContacts.indexOf(rightContactRightRotorFirstValue);
+        console.log('rightContactRightRotorFirstValue: ', rightContactRightRotorFirstValue);
+        console.log('leftContactRightRotorFirstIndex: ', leftContactRightRotorFirstIndex);
+
+        // change key via mid rotor - first trip
+        rightContactMidRotorFirstValue = midRotor.rightMetalContacts[leftContactRightRotorFirstIndex];
+        leftContactMidRotorFirstIndex = midRotor.leftMetalContacts.indexOf(rightContactMidRotorFirstValue);
+        console.log('rightContactMidRotorFirstValue: ', rightContactMidRotorFirstValue);
+        console.log('leftContactMidRotorFirstIndex: ', leftContactMidRotorFirstIndex);
+
+        // change key via left rotor - first trip
+        rightContactLeftRotorFirstValue = leftRotor.rightMetalContacts[leftContactMidRotorFirstIndex];
+        leftContactLeftRotorFirstIndex = leftRotor.leftMetalContacts.indexOf(rightContactLeftRotorFirstValue);
+        console.log('rightContactLeftRotorFirstValue: ', rightContactLeftRotorFirstValue);
+        console.log('leftContactLeftRotorFirstIndex: ', leftContactLeftRotorFirstIndex);
+
+        // change key via reflector
+        reflectorContactOutcome = reflector[leftContactLeftRotorFirstIndex];
+        console.log('reflectorContactOutcome: ', reflectorContactOutcome);
+
+        // change key via left rotor - second trip
+        leftContactLeftRotorSecondValue = leftRotor.leftMetalContacts[reflectorContactOutcome];
+        rightContactLeftRotorSecondIndex = leftRotor.rightMetalContacts.indexOf(leftContactLeftRotorSecondValue);
+        console.log('leftContactLeftRotorSecondValue: ', leftContactLeftRotorSecondValue);
+        console.log('rightContactLeftRotorSecondIndex: ', rightContactLeftRotorSecondIndex);
+
+        // change key via mid rotor - second trip
+        leftContactMidRotorSecondValue = midRotor.leftMetalContacts[rightContactLeftRotorSecondIndex];
+        rightContactMidRotorSecondIndex = midRotor.rightMetalContacts.indexOf(leftContactMidRotorSecondValue);
+        console.log('leftContactMidRotorSecondValue: ', leftContactMidRotorSecondValue);
+        console.log('rightContactMidRotorSecondIndex: ', rightContactMidRotorSecondIndex);
+        
+        // change key via right rotor - second trip
+        leftContactRightRotorSecondValue = rightRotor.leftMetalContacts[rightContactMidRotorSecondIndex];
+        rightContactRightRotorSecondIndex = rightRotor.rightMetalContacts.indexOf(leftContactRightRotorSecondValue);
+        console.log('leftContactRightRotorSecondValue: ', leftContactRightRotorSecondValue);
+        console.log('rightContactRightRotorSecondIndex: ', rightContactRightRotorSecondIndex);
+
+        // get key via inputWheel
+        key = inputWheel[rightContactRightRotorSecondIndex];
+        console.log('key value going in the inputWheel: ', key);
+
+        // change key via plugboard second trip
+        secondMatchKeys = plugboardConnectionArray.filter(pair => pair.includes(key)).map(pair => pair.replace(key, '')); // if key is present, find the other key
+        if (secondMatchKeys.length > 0) {key = secondMatchKeys[0];} // assign the other key to key
+        console.log('key after plugboard second trip: ', key);
+
+        // show key
+        document.querySelector('#toShowKey').innerHTML = key;
+
+        // light up lamp
+        lightUpLamp(key);
+    }
+}
