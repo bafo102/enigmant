@@ -85,6 +85,8 @@ class Cable {
   }
 
   removeMainElement() { // remove the cable
+    let plugOutSound = new Audio(`sound/plug-out.mp3`);
+    plugOutSound.play();
     this.element.remove();
   }
 
@@ -209,6 +211,10 @@ class Cable {
       // update plug datasets
       this.element.dataset.plugOne = this.start.id[this.start.id.length - 1];
       this.element.dataset.plugTwo = this.end.id[this.end.id.length - 1];
+
+      // play sound
+      plugInSound = new Audio(`sound/plug-in.mp3`);
+      plugInSound.play();
     }
 
     else {

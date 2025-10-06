@@ -7,16 +7,19 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="header">
-        <div id="video"><a href="https://www.youtube.com/watch?v=ybkkiGtJmkM">What is this?</a></div>
-        <button id="reset-button" title="Reset everything"><i class="fa-solid fa-rotate-right"></i></button>
-        <button id="mute-button" title="Silent mode"><i class="fa-solid fa-volume-xmark"></i></button>
+    <div id="header" style="display: none;">
+        <!-- <div id="video"><a href="https://www.youtube.com/watch?v=ybkkiGtJmkM">
+            <button><i class="fa-solid fa-info"></i></button>
+        </a></div> -->
+        <!-- <button id="reset-button" title="Reset everything"><i class="fa-solid fa-rotate-right"></i></button> -->
     </div>
     <div id="main">
         <div id="div-left">
             <div id="setting-div">
                 <div id="setting-info">
-                    <button id="copy-setting"><i class="fa-solid fa-copy"></i></button>
+                    <a id="video" title="Wtf is this?" href="https://www.youtube.com/watch?v=ybkkiGtJmkM"><button><i class="fa-solid fa-info"></i></button></a>
+                    <!-- <button id="mute-button" title="Silent mode"><i class="fa-solid fa-volume-xmark"></i></button> -->
+                    <button id="copy-setting" title="Copy setting to clipboard"><i class="fa-solid fa-copy"></i></button>
                 </div>
                 <div id="setting">
                     <div id="setting-rotor">
@@ -243,7 +246,7 @@
                 </div>
                 <div id="switch-box">
                     <div id="switch-ring" class="ready">Ring</div>
-                    <div id="switch" class="at-ring">
+                    <div id="switch" class="at-ring" title="Click to switch between Ring and Rotor mode">
                         <div id="switch-body">
                             <div id="switch-head"></div>
                         </div>
@@ -326,11 +329,7 @@
         </div>
         <div id="div-right">
             <div id="message">
-                <!-- <div id="toShowEnrcryption">
-
-                </div> -->
-                <!-- <div id="toShowRotor" style="display: none;"> -->
-                <div id="toShowRotor">
+                <div id="toShowRotor" style='display: none;'>
                     <div id="toShowRotorOne">Rotor 1</div>
                     <div id="toShowRotorTwo">Rotor 2</div>
                     <div id="toShowRotorThree">Rotor 3</div>
@@ -338,8 +337,8 @@
                     <div id="toShowRotorFive">Rotor 5</div>
                     <div id="toShowKey">Key</div>
                 </div>
-                <!-- <textarea id="input" placeholder="Put the encrypted message here, just so you don't forget it."></textarea>
-                <textarea id="output" placeholder="Write the letter from the lighted lamp below, each time you press a key."></textarea> -->
+                <textarea id="input" placeholder="Put the encrypted message here, just so you don't forget it."></textarea>
+                <textarea id="output" placeholder="Write the letter that is lighted up each time you press a key."></textarea>
             </div>
             <div id="lampboard">
                 <div id="lamprow-1">

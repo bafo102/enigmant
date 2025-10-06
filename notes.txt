@@ -19,9 +19,12 @@ spinRotorOneNotch
 PLUGBOARD
 - assign pairings										V
 
-style caret
 
 Fix self plugging										V
+
+style caret											V
+
+add sounds to plug										V
 
 
 
